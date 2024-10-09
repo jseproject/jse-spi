@@ -1,0 +1,40 @@
+dependencies {
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = rootProject.name + '-' + project.name
+            version = version
+            from components.java
+            pom {
+                name = 'JavaSound Enhancement Project MP3 SPI'
+                description = 'MP3 SPI for the JavaSound subsystem of the Java Platform.'
+                url = 'https://github.com/jseproject/jse-spi'
+                licenses {
+                    license {
+                        name = 'GNU Library or Lesser General Public License, Version 2.0'
+                        url = 'http://www.gnu.org/licenses/old-licenses/lgpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'Tianscar'
+                        name = 'Naoko Mitsurugi'
+                        email = 'tianscar@protonmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com/jseproject/jse-spi.git'
+                    developerConnection = 'scm:git:git@github.com/jseproject/jse-spi.git'
+                    url = 'https://github.com/jseproject/jse-spi'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}

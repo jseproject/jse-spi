@@ -1,0 +1,8 @@
+rootProject.name = 'jse-spi'
+
+include ':flac'
+include ':opus'
+include ':speex'
+include ':vorbis'
+include ':mp3'
+include ':aac'

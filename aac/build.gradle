@@ -1,0 +1,40 @@
+dependencies {
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = rootProject.name + '-' + project.name
+            version = version
+            from components.java
+            pom {
+                name = 'JavaSound Enhancement Project AAC SPI'
+                description = 'AAC SPI for the JavaSound subsystem of the Java Platform.'
+                url = 'https://github.com/jseproject/jse-spi'
+                licenses {
+                    license {
+                        name = 'BSD 2-Clause \"Simplified\" License'
+                        url = 'http://opensource.org/licenses/BSD-2-Clause'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'Tianscar'
+                        name = 'Naoko Mitsurugi'
+                        email = 'tianscar@protonmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com/jseproject/jse-spi.git'
+                    developerConnection = 'scm:git:git@github.com/jseproject/jse-spi.git'
+                    url = 'https://github.com/jseproject/jse-spi'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}

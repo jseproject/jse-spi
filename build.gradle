@@ -1,0 +1,44 @@
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'signing'
+    apply plugin: 'maven-publish'
+
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    group = 'io.github.jseproject'
+    version = '1.0.0'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation platform('org.junit:junit-bom:5.10.0')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+
+        implementation 'com.googlecode.soundlibs:tritonus-share:0.3.7.4'
+        api 'com.googlecode.soundlibs:tritonus-share:0.3.7.4'
+        implementation 'io.github.jseproject:jse-api:1.0.0'
+        api 'io.github.jseproject:jse-api:1.0.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    javadoc {
+        options.addStringOption("Xdoclint:none", "-quiet") // TODO cleanup JavaDocs
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
+
+}
