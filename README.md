@@ -214,12 +214,12 @@ public class PlaybackExample {
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-mp3</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-aac</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
 </dependencies>
 ```
@@ -234,8 +234,8 @@ dependencies {
     implementation 'io.github.jseproject:jse-spi-opus:1.0.0'
     implementation 'io.github.jseproject:jse-spi-vorbis:1.0.0'
     implementation 'io.github.jseproject:jse-spi-speex:1.0.0'
-    implementation 'io.github.jseproject:jse-spi-mp3:1.0.0'
-    implementation 'io.github.jseproject:jse-spi-aac:1.0.0'
+    implementation 'io.github.jseproject:jse-spi-mp3:1.0.1'
+    implementation 'io.github.jseproject:jse-spi-aac:1.0.1'
 }
 ```
 

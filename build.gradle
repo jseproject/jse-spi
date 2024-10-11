@@ -8,7 +8,6 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_1_8
 
     group = 'io.github.jseproject'
-    version = '1.0.1'
 
     repositories {
         mavenLocal()
