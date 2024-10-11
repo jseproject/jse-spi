@@ -187,7 +187,9 @@ public final class Header
 			}
 			else
 			{
-				stream.unreadFrame();
+				// Naoko: previous code skips last frame, trying to fix it
+				if (syncmode != Bitstream.INITIAL_SYNC) sync = true;
+				else stream.unreadFrame();
 			}
 		}
 		while (!sync);
@@ -203,9 +205,9 @@ public final class Header
 		}
 		else
 			crcp[0] = null;
+		/*
 		if (h_sample_frequency == FOURTYFOUR_POINT_ONE)
 		{
-			/*
 				if (offset == null)
 			  {
 				  int max = max_number_of_frames(stream);
@@ -223,8 +225,8 @@ public final class Header
 			  {
 				       offset[0] = h_padding_bit;
 			  }
-			*/
 		}
+		 */
 	}
 
 	/**
@@ -236,6 +238,7 @@ public final class Header
 	{
 		// Trying Xing header.
 		String xing = "Xing";
+		String info = "Info";
 		byte tmp[] = new byte[4];
 		int offset = 0;
 		// Compute "Xing" offset depending on MPEG version and channels.
@@ -252,8 +255,9 @@ public final class Header
 		try
 		{
 			System.arraycopy(firstframe, offset, tmp, 0, 4);
-			// Is "Xing" ?
-			if (xing.equals(new String(tmp)))
+			// Is "Xing" or "Info" ?
+			String tmpString = new String(tmp);
+			if (xing.equals(tmpString) || info.equals(tmpString))
 			{
 				//Yes.
 				h_vbr = true;

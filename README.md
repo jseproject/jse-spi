@@ -105,7 +105,7 @@ public class PlaybackExample {
 <td>YES</td>
 <td>YES</td>
 <td>1-2</td>
-<td>8, 11.025, 12, 16, 22.05, 24, 44.1, 48</td>
+<td>8, 11.025, 12, 16, 22.05, 24, 32, 44.1, 48</td>
 <td>s16</td>
 <td><ul><li>Ogg (.ogg)</li></ul></td>
 </tr>
@@ -141,14 +141,14 @@ public class PlaybackExample {
 <td></td>
 <td>YES</td>
 <td>1-2</td>
-<td rowspan="3">0.001-48</td>
+<td rowspan="3">8, 11.025, 12, 16, 22.05, 24, 32, 44.1, 48</td>
 <td>s16</td>
 <td><ul><li>MP3 (.mp3, .mpg)</li></ul></td>
 </tr>
 <tr>
 <td>MP2</td>
 <td></td>
-<td>YES</td>
+<td>PART</td>
 <td>1-2</td>
 <td>s16</td>
 <td><ul><li>MP2 (.mp2, .mpg)</li></ul></td>
@@ -156,7 +156,7 @@ public class PlaybackExample {
 <tr>
 <td>MP1</td>
 <td></td>
-<td>YES</td>
+<td>PART</td>
 <td>1-2</td>
 <td>s16</td>
 <td><ul><li>MP1 (.mp1, .mpg)</li></ul></td>

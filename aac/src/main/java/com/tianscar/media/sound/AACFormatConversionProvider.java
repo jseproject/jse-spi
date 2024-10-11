@@ -24,81 +24,127 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- *   MpegFormatConversionProvider.
- *
- * JavaZOOM : mp3spi@javazoom.net
- * 			  http://www.javazoom.net
- *
- * ---------------------------------------------------------------------------
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- * --------------------------------------------------------------------------
- */
-
 package com.tianscar.media.sound;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
-import org.tritonus.share.sampled.convert.TEncodingFormatConversionProvider;
+import org.tritonus.share.sampled.convert.TMatrixFormatConversionProvider;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import java.util.Arrays;
 
-public class AACFormatConversionProvider extends TEncodingFormatConversionProvider {
+public class AACFormatConversionProvider extends TMatrixFormatConversionProvider {
 
-    private static final AudioFormat[] INPUT_FORMATS = new AudioFormat[] {
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 2, -1, -1.0f, true),
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 3, -1, -1.0f, true),
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 4, -1, -1.0f, true),
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 5, -1, -1.0f, true),
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 6, -1, -1.0f, true),
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 7, -1, -1.0f, true),
-            new AudioFormat(AACEncoding.AAC, -1.0f, -1, 8, -1, -1.0f, true)
-    };
+    private static final AudioFormat[] INPUT_FORMATS = new AudioFormat[11 * 8];
+    static {
+        for (int i = 0; i < 8; i ++) {
+            INPUT_FORMATS[11 * i] =
+                    new AudioFormat(AACEncoding.AAC, 8000.0f, -1, i, -1, 8000.0f, true);
+            INPUT_FORMATS[11 * i + 1] =
+                    new AudioFormat(AACEncoding.AAC, 11025.0f, -1, i, -1, 11025.0f, true);
+            INPUT_FORMATS[11 * i + 2] =
+                    new AudioFormat(AACEncoding.AAC, 12000.0f, -1, i, -1, 12000.0f, true);
+            INPUT_FORMATS[11 * i + 3] =
+                    new AudioFormat(AACEncoding.AAC, 16000.0f, -1, i, -1, 16000.0f, true);
+            INPUT_FORMATS[11 * i + 4] =
+                    new AudioFormat(AACEncoding.AAC, 22050.0f, -1, i, -1, 22050.0f, true);
+            INPUT_FORMATS[11 * i + 5] =
+                    new AudioFormat(AACEncoding.AAC, 24000.0f, -1, i, -1, 24000.0f, true);
+            INPUT_FORMATS[11 * i + 6] =
+                    new AudioFormat(AACEncoding.AAC, 44100.0f, -1, i, -1, 44100.0f, true);
+            INPUT_FORMATS[11 * i + 7] =
+                    new AudioFormat(AACEncoding.AAC, 48000.0f, -1, i, -1, 48000.0f, true);
+            INPUT_FORMATS[11 * i + 8] =
+                    new AudioFormat(AACEncoding.AAC, 64000.0f, -1, i, -1, 64000.0f, true);
+            INPUT_FORMATS[11 * i + 9] =
+                    new AudioFormat(AACEncoding.AAC, 88200.0f, -1, i, -1, 88200.0f, true);
+            INPUT_FORMATS[11 * i + 10] =
+                    new AudioFormat(AACEncoding.AAC, 96000.0f, -1, i, -1, 96000.0f, true);
+        }
+    }
 
     private static final AudioFormat[] OUTPUT_FORMATS = new AudioFormat[] {
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 1, 2, -1.0f, false),
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 1, 2, -1.0f, true),
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 2, 4, -1.0f, false),
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 2, 4, -1.0f, true),
+            new AudioFormat(8000.0f, 16, 1, true, false),
+            new AudioFormat(8000.0f, 16, 1, true, true),
+            new AudioFormat(8000.0f, 16, 2, true, false),
+            new AudioFormat(8000.0f, 16, 2, true, true),
+            new AudioFormat(11025.0f, 16, 1, true, false),
+            new AudioFormat(11025.0f, 16, 1, true, true),
+            new AudioFormat(11025.0f, 16, 2, true, false),
+            new AudioFormat(11025.0f, 16, 2, true, true),
+            new AudioFormat(12000.0f, 16, 1, true, false),
+            new AudioFormat(12000.0f, 16, 1, true, true),
+            new AudioFormat(12000.0f, 16, 2, true, false),
+            new AudioFormat(12000.0f, 16, 2, true, true),
+            new AudioFormat(16000.0f, 16, 1, true, false),
+            new AudioFormat(16000.0f, 16, 1, true, true),
+            new AudioFormat(16000.0f, 16, 2, true, false),
+            new AudioFormat(16000.0f, 16, 2, true, true),
+            new AudioFormat(22050.0f, 16, 1, true, false),
+            new AudioFormat(22050.0f, 16, 1, true, true),
+            new AudioFormat(22050.0f, 16, 2, true, false),
+            new AudioFormat(22050.0f, 16, 2, true, true),
+            new AudioFormat(24000.0f, 16, 1, true, false),
+            new AudioFormat(24000.0f, 16, 1, true, true),
+            new AudioFormat(24000.0f, 16, 2, true, false),
+            new AudioFormat(24000.0f, 16, 2, true, true),
+            new AudioFormat(44100.0f, 16, 1, true, false),
+            new AudioFormat(44100.0f, 16, 1, true, true),
+            new AudioFormat(44100.0f, 16, 2, true, false),
+            new AudioFormat(44100.0f, 16, 2, true, true),
+            new AudioFormat(48000.0f, 16, 1, true, false),
+            new AudioFormat(48000.0f, 16, 1, true, true),
+            new AudioFormat(48000.0f, 16, 2, true, false),
+            new AudioFormat(48000.0f, 16, 2, true, true),
+            new AudioFormat(64000.0f, 16, 1, true, false),
+            new AudioFormat(64000.0f, 16, 1, true, true),
+            new AudioFormat(64000.0f, 16, 2, true, false),
+            new AudioFormat(64000.0f, 16, 2, true, true),
+            new AudioFormat(88200.0f, 16, 1, true, false),
+            new AudioFormat(88200.0f, 16, 1, true, true),
+            new AudioFormat(88200.0f, 16, 2, true, false),
+            new AudioFormat(88200.0f, 16, 2, true, true),
+            new AudioFormat(96000.0f, 16, 1, true, false),
+            new AudioFormat(96000.0f, 16, 1, true, true),
+            new AudioFormat(96000.0f, 16, 2, true, false),
+            new AudioFormat(96000.0f, 16, 2, true, true),
     };
 
+    private static final boolean t = true;
+    private static final boolean f = false;
+
+    /*
+     *	One row for each source format.
+     */
+    private static final boolean[][] CONVERSIONS = new boolean[11 * 8][44];
+    static {
+        for (int i = 0; i < 8; i ++) {
+            CONVERSIONS[11 * i] =
+                    new boolean[] {t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 1] =
+                    new boolean[] {f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 2] =
+                    new boolean[] {f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 3] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 4] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 5] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 6] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 7] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 8] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f, f,f,f,f};
+            CONVERSIONS[11 * i + 9] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t, f,f,f,f};
+            CONVERSIONS[11 * i + 10] =
+                    new boolean[] {f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f, t,t,t,t};
+        }
+    }
+
     public AACFormatConversionProvider() {
-        super(Arrays.asList(INPUT_FORMATS), Arrays.asList(OUTPUT_FORMATS));
-    }
-
-    private static boolean checkSampleRate(AudioFormat format) {
-        int sampleRate = (int) format.getSampleRate();
-        return sampleRate >= 1 && sampleRate <= 48000;
-    }
-
-    @Override
-    protected boolean isAllowedSourceFormat(AudioFormat sourceFormat) {
-        return checkSampleRate(sourceFormat) && super.isAllowedSourceFormat(sourceFormat);
-    }
-
-    @Override
-    protected boolean isAllowedTargetFormat(AudioFormat targetFormat) {
-        if (!checkSampleRate(targetFormat)) return false;
-        if (!isAllowedTargetEncoding(targetFormat.getEncoding())) return false;
-        if (targetFormat.getSampleSizeInBits() != 16) return false;
-        int channels = targetFormat.getChannels();
-        if (channels != 1 && channels != 2) return false;
-        return targetFormat.getFrameSize() == 2 * channels;
+        super(Arrays.asList(INPUT_FORMATS), Arrays.asList(OUTPUT_FORMATS), CONVERSIONS);
     }
 
     @Override
@@ -106,26 +152,6 @@ public class AACFormatConversionProvider extends TEncodingFormatConversionProvid
         if (audioInputStream instanceof AACAudioInputStream && isConversionSupported(targetFormat, audioInputStream.getFormat()))
             return new DecodedAACAudioInputStream(targetFormat, (AACAudioInputStream) audioInputStream);
         else throw new IllegalArgumentException("conversion not supported");
-    }
-
-    @Override
-    public boolean isConversionSupported(AudioFormat targetFormat, AudioFormat sourceFormat) {
-        if (TDebug.TraceAudioConverter) {
-            TDebug.out(">AACFormatConversionProvider.isConversionSupported(AudioFormat targetFormat, AudioFormat sourceFormat):");
-            TDebug.out("checking if conversion possible");
-            TDebug.out("from: " + sourceFormat);
-            TDebug.out("to: " + targetFormat);
-        }
-        for (AudioFormat handledFormat : getTargetFormats(targetFormat.getEncoding(), sourceFormat)) {
-            if (TDebug.TraceAudioConverter) TDebug.out("checking against possible target format: " + handledFormat);
-            if (handledFormat != null && AudioFormats.matches(handledFormat, targetFormat)
-                    && isAllowedSourceFormat(sourceFormat) && isAllowedTargetFormat(targetFormat)) {
-                if (TDebug.TraceAudioConverter) TDebug.out("<result=true");
-                return true;
-            }
-        }
-        if (TDebug.TraceAudioConverter) TDebug.out("<result=false");
-        return false;
     }
 
 }

@@ -23,112 +23,155 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/*
- *   MpegFormatConversionProvider.
- *
- * JavaZOOM : mp3spi@javazoom.net
- * 			  http://www.javazoom.net
- *
- * ---------------------------------------------------------------------------
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- * --------------------------------------------------------------------------
- */
-
 package com.tianscar.media.sound;
 
-import java.util.Arrays;
+import org.tritonus.share.sampled.convert.TMatrixFormatConversionProvider;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
+import java.util.Arrays;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
-import org.tritonus.share.sampled.convert.TEncodingFormatConversionProvider;
-
-public class Mp3FormatConversionProvider extends TEncodingFormatConversionProvider {
-
-    private static final AudioFormat[] INPUT_FORMATS = new AudioFormat[] {
-            new AudioFormat(Mp3Encoding.MPEG2_L1, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2_L1, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2_L1, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2_L1, -1.0f, -1, 2, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2_L2, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2_L2, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2_L2, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2_L2, -1.0f, -1, 2, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2_L3, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2_L3, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2_L3, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2_L3, -1.0f, -1, 2, -1, -1.0f, true),
-
-            new AudioFormat(Mp3Encoding.MPEG1_L1, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG1_L1, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG1_L1, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG1_L1, -1.0f, -1, 2, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG1_L2, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG1_L2, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG1_L2, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG1_L2, -1.0f, -1, 2, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG1_L3, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG1_L3, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG1_L3, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG1_L3, -1.0f, -1, 2, -1, -1.0f, true),
-
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L1, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L1, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L1, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L1, -1.0f, -1, 2, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L2, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L2, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L2, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L2, -1.0f, -1, 2, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L3, -1.0f, -1, 1, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L3, -1.0f, -1, 1, -1, -1.0f, true),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L3, -1.0f, -1, 2, -1, -1.0f, false),
-            new AudioFormat(Mp3Encoding.MPEG2DOT5_L3, -1.0f, -1, 2, -1, -1.0f, true)
-    };
+public class Mp3FormatConversionProvider extends TMatrixFormatConversionProvider {
+    
+    private static final AudioFormat[] INPUT_FORMATS = new AudioFormat[18 * 9];
+    static {
+        AudioFormat.Encoding[] encodings = new AudioFormat.Encoding[] {
+                Mp3Encoding.MPEG2_L1, Mp3Encoding.MPEG2_L2, Mp3Encoding.MPEG2_L3,
+                Mp3Encoding.MPEG1_L1, Mp3Encoding.MPEG1_L2, Mp3Encoding.MPEG1_L3,
+                Mp3Encoding.MPEG2DOT5_L1, Mp3Encoding.MPEG2DOT5_L2, Mp3Encoding.MPEG2DOT5_L3
+        };
+        for (int i = 0; i < 9; i ++) {
+            AudioFormat.Encoding encoding = encodings[i];
+            INPUT_FORMATS[18 * i] = 
+                    new AudioFormat(encoding, 32000.0f, -1, 1, -1, 32000.0f, false); // 0
+            INPUT_FORMATS[18 * i + 1] =
+                    new AudioFormat(encoding, 32000.0f, -1, 2, -1, 32000.0f, false); // 1
+            INPUT_FORMATS[18 * i + 2] =
+                    new AudioFormat(encoding, 44100.0f, -1, 1, -1, 44100.0f, false); // 2
+            INPUT_FORMATS[18 * i + 3] =
+                    new AudioFormat(encoding, 44100.0f, -1, 2, -1, 44100.0f, false); // 3
+            INPUT_FORMATS[18 * i + 4] =
+                    new AudioFormat(encoding, 48000.0f, -1, 1, -1, 48000.0f, false); // 4
+            INPUT_FORMATS[18 * i + 5] =
+                    new AudioFormat(encoding, 48000.0f, -1, 2, -1, 48000.0f, false); // 5
+            INPUT_FORMATS[18 * i + 6] =
+                    new AudioFormat(encoding, 16000.0f, -1, 1, -1, 16000.0f, false); // 18
+            INPUT_FORMATS[18 * i + 7] =
+                    new AudioFormat(encoding, 16000.0f, -1, 2, -1, 16000.0f, false); // 19
+            INPUT_FORMATS[18 * i + 8] =
+                    new AudioFormat(encoding, 22050.0f, -1, 1, -1, 22050.0f, false); // 20
+            INPUT_FORMATS[18 * i + 9] =
+                    new AudioFormat(encoding, 22050.0f, -1, 2, -1, 22050.0f, false); // 21
+            INPUT_FORMATS[18 * i + 10] =
+                    new AudioFormat(encoding, 24000.0f, -1, 1, -1, 24000.0f, false); // 22
+            INPUT_FORMATS[18 * i + 11] =
+                    new AudioFormat(encoding, 24000.0f, -1, 2, -1, 24000.0f, false); // 23
+            INPUT_FORMATS[18 * i + 12] =
+                    new AudioFormat(encoding, 8000.0f, -1, 1, -1, 8000.0f, false); // 36
+            INPUT_FORMATS[18 * i + 13] =
+                    new AudioFormat(encoding, 8000.0f, -1, 2, -1, 8000.0f, false); // 37
+            INPUT_FORMATS[18 * i + 14] =
+                    new AudioFormat(encoding, 11025.0f, -1, 1, -1, 11025.0f, false); // 38
+            INPUT_FORMATS[18 * i + 15] =
+                    new AudioFormat(encoding, 11025.0f, -1, 2, -1, 11025.0f, false); // 39
+            INPUT_FORMATS[18 * i + 16] =
+                    new AudioFormat(encoding, 12000.0f, -1, 1, -1, 12000.0f, false); // 40
+            INPUT_FORMATS[18 * i + 17] =
+                    new AudioFormat(encoding, 12000.0f, -1, 2, -1, 12000.0f, false); // 41
+        }
+    }
 
     private static final AudioFormat[] OUTPUT_FORMATS = new AudioFormat[] {
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 1, 2, -1.0f, false),
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 1, 2, -1.0f, true),
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 2, 4, -1.0f, false),
-            new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, -1.0f, 16, 2, 4, -1.0f, true),
+            new AudioFormat(8000.0f, 16, 1, true, false), // 0
+            new AudioFormat(8000.0f, 16, 1, true, true),  // 1
+            new AudioFormat(8000.0f, 16, 2, true, false), // 2
+            new AudioFormat(8000.0f, 16, 2, true, true),  // 3
+            new AudioFormat(11025.0f, 16, 1, true, false), // 4
+            new AudioFormat(11025.0f, 16, 1, true, true),  // 5
+            new AudioFormat(11025.0f, 16, 2, true, false), // 6
+            new AudioFormat(11025.0f, 16, 2, true, true),  // 7
+            new AudioFormat(12000.0f, 16, 1, true, false), // 8
+            new AudioFormat(12000.0f, 16, 1, true, true),  // 9
+            new AudioFormat(12000.0f, 16, 2, true, false), // 10
+            new AudioFormat(12000.0f, 16, 2, true, true),  // 11
+            new AudioFormat(16000.0f, 16, 1, true, false), // 12
+            new AudioFormat(16000.0f, 16, 1, true, true),  // 13
+            new AudioFormat(16000.0f, 16, 2, true, false), // 14
+            new AudioFormat(16000.0f, 16, 2, true, true),  // 15
+            new AudioFormat(22050.0f, 16, 1, true, false), // 16
+            new AudioFormat(22050.0f, 16, 1, true, true),  // 17
+            new AudioFormat(22050.0f, 16, 2, true, false), // 18
+            new AudioFormat(22050.0f, 16, 2, true, true),  // 19
+            new AudioFormat(24000.0f, 16, 1, true, false), // 20
+            new AudioFormat(24000.0f, 16, 1, true, true),  // 21
+            new AudioFormat(24000.0f, 16, 2, true, false), // 22
+            new AudioFormat(24000.0f, 16, 2, true, true),  // 23
+            new AudioFormat(32000.0f, 16, 1, true, false), // 24
+            new AudioFormat(32000.0f, 16, 1, true, true),  // 25
+            new AudioFormat(32000.0f, 16, 2, true, false), // 26
+            new AudioFormat(32000.0f, 16, 2, true, true),  // 27
+            new AudioFormat(44100.0f, 16, 1, true, false), // 28
+            new AudioFormat(44100.0f, 16, 1, true, true),  // 29
+            new AudioFormat(44100.0f, 16, 2, true, false), // 30
+            new AudioFormat(44100.0f, 16, 2, true, true),  // 31
+            new AudioFormat(48000.0f, 16, 1, true, false), // 32
+            new AudioFormat(48000.0f, 16, 1, true, true),  // 33
+            new AudioFormat(48000.0f, 16, 2, true, false), // 34
+            new AudioFormat(48000.0f, 16, 2, true, true),  // 35
     };
 
+    private static final boolean t = true;
+    private static final boolean f = false;
+
+    /*
+     *	One row for each source format.
+     */
+    private static final boolean[][] CONVERSIONS = new boolean[18 * 9][36];
+    static {
+        for (int i = 0; i < 9; i ++) {
+            CONVERSIONS[18 * i] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,t,t,f,f,f,f, f,f,f,f,f,f};	// 0
+            CONVERSIONS[18 * i + 1] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,t,t,f,f, f,f,f,f,f,f};	// 1
+            CONVERSIONS[18 * i + 2] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,t,t, f,f,f,f,f,f};	// 2
+            CONVERSIONS[18 * i + 3] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,f,f};	// 3
+            CONVERSIONS[18 * i + 4] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f};	// 4
+            CONVERSIONS[18 * i + 5] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,t,t};	// 5
+
+            CONVERSIONS[18 * i + 6] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 18
+            CONVERSIONS[18 * i + 7] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,t,t,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 19
+            CONVERSIONS[18 * i + 8] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,t,t,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 20
+            CONVERSIONS[18 * i + 9] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,t,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 21
+            CONVERSIONS[18 * i + 10] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 22
+            CONVERSIONS[18 * i + 11] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,f,f,f,f, f,f,f,f,f,f};	// 23
+
+            CONVERSIONS[18 * i + 12] =
+                    new boolean[] {t,t,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 36
+            CONVERSIONS[18 * i + 13] =
+                    new boolean[] {f,f,t,t,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 37
+            CONVERSIONS[18 * i + 14] =
+                    new boolean[] {f,f,f,f,t,t,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 38
+            CONVERSIONS[18 * i + 15] =
+                    new boolean[] {f,f,f,f,f,f,t,t,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 39
+            CONVERSIONS[18 * i + 16] =
+                    new boolean[] {f,f,f,f,f,f,f,f,t,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 40
+            CONVERSIONS[18 * i + 17] =
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, t,t,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 41
+        }
+    }
+
     public Mp3FormatConversionProvider() {
-        super(Arrays.asList(INPUT_FORMATS), Arrays.asList(OUTPUT_FORMATS));
-    }
-
-    private static boolean checkSampleRate(AudioFormat format) {
-        int sampleRate = (int) format.getSampleRate();
-        return sampleRate >= 1 && sampleRate <= 48000;
-    }
-
-    @Override
-    protected boolean isAllowedSourceFormat(AudioFormat sourceFormat) {
-        return checkSampleRate(sourceFormat) && super.isAllowedSourceFormat(sourceFormat);
-    }
-
-    @Override
-    protected boolean isAllowedTargetFormat(AudioFormat targetFormat) {
-        if (!checkSampleRate(targetFormat)) return false;
-        if (!isAllowedTargetEncoding(targetFormat.getEncoding())) return false;
-        if (targetFormat.getSampleSizeInBits() != 16) return false;
-        int channels = targetFormat.getChannels();
-        if (channels != 1 && channels != 2) return false;
-        return targetFormat.getFrameSize() == 2 * channels;
+        super(Arrays.asList(INPUT_FORMATS), Arrays.asList(OUTPUT_FORMATS), CONVERSIONS);
     }
 
     @Override
@@ -136,26 +179,6 @@ public class Mp3FormatConversionProvider extends TEncodingFormatConversionProvid
         if (audioInputStream instanceof Mp3AudioInputStream && isConversionSupported(targetFormat, audioInputStream.getFormat()))
             return new DecodedMp3AudioInputStream(targetFormat, (Mp3AudioInputStream) audioInputStream);
         else throw new IllegalArgumentException("conversion not supported");
-    }
-
-    @Override
-    public boolean isConversionSupported(AudioFormat targetFormat, AudioFormat sourceFormat) {
-        if (TDebug.TraceAudioConverter) {
-            TDebug.out(">Mp3FormatConversionProvider.isConversionSupported(AudioFormat targetFormat, AudioFormat sourceFormat):");
-            TDebug.out("checking if conversion possible");
-            TDebug.out("from: " + sourceFormat);
-            TDebug.out("to: " + targetFormat);
-        }
-        for (AudioFormat handledFormat : getTargetFormats(targetFormat.getEncoding(), sourceFormat)) {
-            if (TDebug.TraceAudioConverter) TDebug.out("checking against possible target format: " + handledFormat);
-            if (handledFormat != null && AudioFormats.matches(handledFormat, targetFormat)
-                    && isAllowedSourceFormat(sourceFormat) && isAllowedTargetFormat(targetFormat)) {
-                if (TDebug.TraceAudioConverter) TDebug.out("<result=true");
-                return true;
-            }
-        }
-        if (TDebug.TraceAudioConverter) TDebug.out("<result=false");
-        return false;
     }
 
 }

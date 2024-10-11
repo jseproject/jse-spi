@@ -134,7 +134,7 @@ public class Mp3AudioFileReader extends TAudioFileReader {
             if (streamPos > 0 && nMediaLength != AudioSystem.NOT_SPECIFIED && streamPos < nMediaLength)
                 nMediaLength -= streamPos;
             header = bitstream.readFrame();
-            if (header == null) throw new NullPointerException("header == null");
+            if (header == null) throw new NullPointerException("header is null (end of mpeg stream)");
             id3v2 = bitstream.getRawID3v2();
             if (readID3v1 && lFileLengthInBytes != AudioSystem.NOT_SPECIFIED && nAvailable == lFileLengthInBytes) {
                 id3v1 = new byte[128];
@@ -207,7 +207,7 @@ public class Mp3AudioFileReader extends TAudioFileReader {
         try {
             Bitstream bitstream = new Bitstream(pis);
             header = bitstream.readFrame();
-            if (header == null) throw new NullPointerException("header == null");
+            if (header == null) throw new NullPointerException("header is null (end of mpeg stream)");
             if (TDebug.TraceAudioFileReader) TDebug.out(header.toString());
         }
         catch (Exception e) {

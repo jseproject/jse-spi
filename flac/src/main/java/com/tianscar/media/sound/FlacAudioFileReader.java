@@ -210,6 +210,7 @@ public class FlacAudioFileReader extends TAudioFileReader {
         return getAudioInputStream(inputStream);
     }
 
+    // Workaround for FlacOggFile
     private static class FlacOggFile extends FlacFile implements OggAudioHeaders {
         private OggFile ogg;
         private OggPacketReader r;
@@ -231,7 +232,7 @@ public class FlacAudioFileReader extends TAudioFileReader {
                     }
                 }
             }
-            if (sid == -1) throw new IllegalArgumentException("Supplied File is not Speex");
+            if (sid == -1) throw new IllegalArgumentException("Supplied File is not OggFLAC");
 
             // First packet is special
             firstPacket = new FlacFirstOggPacket(p);

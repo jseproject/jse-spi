@@ -8,7 +8,7 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_1_8
 
     group = 'io.github.jseproject'
-    version = '1.0.0'
+    version = '1.0.1'
 
     repositories {
         mavenLocal()
@@ -32,6 +32,18 @@ subprojects {
     java {
         withSourcesJar()
         withJavadocJar()
+    }
+
+    tasks.withType(Javadoc).all {
+        enabled = false
+    }
+
+    publishing {
+        repositories {
+            maven {
+                url projectDir.absolutePath + '/build/repository'
+            }
+        }
     }
 
     javadoc {

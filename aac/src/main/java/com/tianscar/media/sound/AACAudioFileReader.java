@@ -45,7 +45,7 @@ import java.io.PushbackInputStream;
 
 public class AACAudioFileReader extends TAudioFileReader {
 
-    private static final int INITIAL_READ_LENGTH = 16384;
+    private static final int INITIAL_READ_LENGTH = 128000 * 32;
     private static final int MARK_LIMIT = INITIAL_READ_LENGTH + 1;
 
     public AACAudioFileReader() {
