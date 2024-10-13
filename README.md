@@ -159,7 +159,7 @@ public class PlaybackExample {
 <td>YES</td>
 <td>1-2</td>
 <td>u8, s16, u24</td>
-<td><ul><li>MP1 (.mpg, .mp1)</li></ul></td>
+<td><ul><li>MP1 (.mp1)</li></ul></td>
 </tr>
 <tr>
 <td rowspan="3">jse-spi-aac</td>
