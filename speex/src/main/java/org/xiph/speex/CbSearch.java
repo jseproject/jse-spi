@@ -1,10 +1,12 @@
 /*
  * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2004 Wimba S.A.
+ * Copyright (c) 1999-2004 Marc Gimpel, Wimba S.A.
  * Copyright (c) 2002-2004 Xiph.org Foundation
  * Copyright (c) 2002-2004 Jean-Marc Valin
  * Copyright (c) 1993, 2002 David Rowe
- * Copyright (c) 1992-1994	Jutta Degener, Carsten Bormann
+ * Copyright (c) 1992-1994 Jutta Degener,
+ *                         Carsten Bormann,
+ *                         Berlin University of Technology
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

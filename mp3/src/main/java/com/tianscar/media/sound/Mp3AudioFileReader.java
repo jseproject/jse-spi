@@ -1,70 +1,39 @@
 /*
  * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 2008 Christopher G. Jennings
- * Copyright (c) 1999-2010 JavaZOOM
- * Copyright (c) 1999 Mat McGowan
+ * Copyright (c) 1999-2010 The LAME Project
+ * Copyright (c) 1999-2008 JavaZOOM
+ * Copyright (c) 2001-2002 Naoki Shibata
+ * Copyright (c) 2001 Jonathan Dee
+ * Copyright (c) 2000-2017 Robert Hegemann
+ * Copyright (c) 2000-2008 Gabriel Bouvigne
+ * Copyright (c) 2000-2005 Alexander Leidinger
+ * Copyright (c) 2000 Don Melton
+ * Copyright (c) 1999-2005 Takehiro Tominaga
+ * Copyright (c) 1999-2001 Mark Taylor
+ * Copyright (c) 1999 Albert L. Faber
+ * Copyright (c) 1988, 1993 Ron Mayer
+ * Copyright (c) 1998 Michael Cheng
  * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1993-1994 Tobias Bading
- * Copyright (c) 1991 MPEG Software Simulation Group
+ * Copyright (c) 1995-1997 Michael Hipp
+ * Copyright (c) 1993-1994 Tobias Bading,
+ *                         Berlin University of Technology
  *
  * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * - This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Library General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * - You should have received a copy of the GNU Library General Public
+ * - You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
 
-/*
- * MpegAudioFileReader.
- *
- * 10/10/05 : size computation bug fixed in parseID3v2Frames.
- *            RIFF/MP3 header support added.
- *            FLAC and MAC headers throw UnsupportedAudioFileException now.
- *            "mp3.id3tag.publisher" (TPUB/TPB) added.
- *            "mp3.id3tag.orchestra" (TPE2/TP2) added.
- *            "mp3.id3tag.length" (TLEN/TLE) added.
- *
- * 08/15/05 : parseID3v2Frames improved.
- *
- * 12/31/04 : mp3spi.weak system property added to skip controls.
- *
- * 11/29/04 : ID3v2.2, v2.3 & v2.4 support improved.
- *            "mp3.id3tag.composer" (TCOM/TCM) added
- *            "mp3.id3tag.grouping" (TIT1/TT1) added
- *            "mp3.id3tag.disc" (TPA/TPOS) added
- *            "mp3.id3tag.encoded" (TEN/TENC) added
- *            "mp3.id3tag.v2.version" added
- *
- * 11/28/04 : String encoding bug fix in chopSubstring method.
- *
- * JavaZOOM : mp3spi@javazoom.net
- * 			  http://www.javazoom.net
- *
- *-----------------------------------------------------------------------
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *----------------------------------------------------------------------
- */
 package com.tianscar.media.sound;
 
 import javazoom.jl.decoder.Bitstream;
@@ -134,7 +103,7 @@ public class Mp3AudioFileReader extends TAudioFileReader {
             if (streamPos > 0 && nMediaLength != AudioSystem.NOT_SPECIFIED && streamPos < nMediaLength)
                 nMediaLength -= streamPos;
             header = bitstream.readFrame();
-            if (header == null) throw new NullPointerException("header is null (end of mpeg stream)");
+            if (header == null) throw new IOException("header is null (end of mpeg stream)");
             id3v2 = bitstream.getRawID3v2();
             if (readID3v1 && lFileLengthInBytes != AudioSystem.NOT_SPECIFIED && nAvailable == lFileLengthInBytes) {
                 id3v1 = new byte[128];
@@ -207,7 +176,7 @@ public class Mp3AudioFileReader extends TAudioFileReader {
         try {
             Bitstream bitstream = new Bitstream(pis);
             header = bitstream.readFrame();
-            if (header == null) throw new NullPointerException("header is null (end of mpeg stream)");
+            if (header == null) throw new IOException("header is null (end of mpeg stream)");
             if (TDebug.TraceAudioFileReader) TDebug.out(header.toString());
         }
         catch (Exception e) {

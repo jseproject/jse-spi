@@ -138,28 +138,28 @@ public class PlaybackExample {
 <tr>
 <td rowspan="3">jse-spi-mp3</td>
 <td>MP3</td>
-<td></td>
+<td>YES</td>
 <td>YES</td>
 <td>1-2</td>
 <td rowspan="3">8, 11.025, 12, 16, 22.05, 24, 32, 44.1, 48</td>
-<td>s16</td>
-<td><ul><li>MP3 (.mp3, .mpg)</li></ul></td>
+<td>u8, s16, u24</td>
+<td><ul><li>MP3 (.mp3)</li></ul></td>
 </tr>
 <tr>
 <td>MP2</td>
 <td></td>
-<td>PART</td>
+<td>YES</td>
 <td>1-2</td>
-<td>s16</td>
-<td><ul><li>MP2 (.mp2, .mpg)</li></ul></td>
+<td>u8, s16, u24</td>
+<td><ul><li>MP2 (.mp2)</li></ul></td>
 </tr>
 <tr>
 <td>MP1</td>
 <td></td>
-<td>PART</td>
+<td>YES</td>
 <td>1-2</td>
-<td>s16</td>
-<td><ul><li>MP1 (.mp1, .mpg)</li></ul></td>
+<td>u8, s16, u24</td>
+<td><ul><li>MP1 (.mpg, .mp1)</li></ul></td>
 </tr>
 <tr>
 <td rowspan="3">jse-spi-aac</td>
@@ -194,32 +194,32 @@ public class PlaybackExample {
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-flac</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-opus</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-vorbis</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-speex</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-mp3</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-aac</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </dependency>
 </dependencies>
 ```
@@ -230,12 +230,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.jseproject:jse-spi-flac:1.0.0'
-    implementation 'io.github.jseproject:jse-spi-opus:1.0.0'
-    implementation 'io.github.jseproject:jse-spi-vorbis:1.0.0'
-    implementation 'io.github.jseproject:jse-spi-speex:1.0.0'
-    implementation 'io.github.jseproject:jse-spi-mp3:1.0.1'
-    implementation 'io.github.jseproject:jse-spi-aac:1.0.1'
+    implementation 'io.github.jseproject:jse-spi-flac:1.0.1'
+    implementation 'io.github.jseproject:jse-spi-opus:1.0.1'
+    implementation 'io.github.jseproject:jse-spi-vorbis:1.0.1'
+    implementation 'io.github.jseproject:jse-spi-speex:1.0.1'
+    implementation 'io.github.jseproject:jse-spi-mp3:1.0.2'
+    implementation 'io.github.jseproject:jse-spi-aac:1.0.2'
 }
 ```
 

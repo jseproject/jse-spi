@@ -52,7 +52,7 @@ public class OpusFileFormatType extends AudioFileFormat.Type {
 
     int complexity = 7;
     static AudioFileFormat.Type withComplexity(AudioFileFormat.Type type, int complexity) {
-        if (type instanceof OpusFileFormatType) ((OpusFileFormatType) type).complexity = complexity;
+        if (type instanceof OpusFileFormatType) ((OpusFileFormatType) type).complexity = Math.max(0, Math.min(10, complexity));
         return type;
     }
 

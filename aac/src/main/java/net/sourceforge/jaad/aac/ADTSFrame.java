@@ -29,7 +29,7 @@ package net.sourceforge.jaad.aac;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class ADTSFrame {
+final class ADTSFrame {
 
 	//fixed
 	private boolean id, protectionAbsent, privateBit, copy, home;

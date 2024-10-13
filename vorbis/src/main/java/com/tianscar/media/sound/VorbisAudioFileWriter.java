@@ -2,6 +2,8 @@
  * Copyright (c) 2024 Naoko Mitsurugi
  * Copyright (c) 2019 Alexey Kuznetsov
  * Copyright (c) 2002-2018 Xiph.Org Foundation
+ * Copyright (c) 1994-1996 James Gosling,
+ *                         Kevin A. Smith, Sun Microsystems, Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -253,14 +255,14 @@ public class VorbisAudioFileWriter extends TAudioFileWriter {
         Packet header = new Packet();
         Packet header_comm = new Packet();
         Packet header_code = new Packet();
-        vorbisDspState.analysis_headerout( vorbisComment, header, header_comm, header_code );
-        oggStreamState.packetin( header );
-        oggStreamState.packetin( header_comm );
-        oggStreamState.packetin( header_code );
+        vorbisDspState.analysis_headerout(vorbisComment, header, header_comm, header_code);
+        oggStreamState.packetin(header);
+        oggStreamState.packetin(header_comm);
+        oggStreamState.packetin(header_code);
         /* Ensures the audio data will start on a new page. */
         while (oggStreamState.flush(oggPage) != 0) {
-            out.write( oggPage.header_base, oggPage.header, oggPage.header_len );
-            out.write( oggPage.body_base, oggPage.body, oggPage.body_len );
+            out.write(oggPage.header_base, oggPage.header, oggPage.header_len);
+            out.write(oggPage.body_base, oggPage.body, oggPage.body_len);
             nTotalWritten += oggPage.header_len;
             nTotalWritten += oggPage.body_len;
         }

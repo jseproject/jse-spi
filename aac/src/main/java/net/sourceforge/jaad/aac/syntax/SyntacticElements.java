@@ -37,7 +37,7 @@ import net.sourceforge.jaad.aac.AACDecoderConfig;
 
 import net.sourceforge.jaad.aac.AACException;
 import net.sourceforge.jaad.aac.ChannelConfiguration;
-import net.sourceforge.jaad.aac.Logger;
+import net.sourceforge.jaad.aac.Log;
 import net.sourceforge.jaad.aac.Profile;
 import net.sourceforge.jaad.aac.SampleBuffer;
 import net.sourceforge.jaad.aac.SampleFrequency;
@@ -102,36 +102,36 @@ public class SyntacticElements implements SyntaxConstants {
 				switch(type) {
 					case ELEMENT_SCE:
 					case ELEMENT_LFE:
-					    Logger.debug("SCE");
+					    Log.debug("SCE");
 						prev = decodeSCE_LFE(_in);
 						break;
 					case ELEMENT_CPE:
-					    Logger.debug("CPE");
+					    Log.debug("CPE");
 						prev = decodeCPE(_in);
 						break;
 					case ELEMENT_CCE:
-					    Logger.debug("CCE");
+					    Log.debug("CCE");
 						decodeCCE(_in);
 						prev = null;
 						break;
 					case ELEMENT_DSE:
-					    Logger.debug("DSE");
+					    Log.debug("DSE");
 						decodeDSE(_in);
 						prev = null;
 						break;
 					case ELEMENT_PCE:
-					    Logger.debug("PCE");
+					    Log.debug("PCE");
 						decodePCE(_in);
 						prev = null;
 						break;
 					case ELEMENT_FIL:
-					    Logger.debug("FIL");
+					    Log.debug("FIL");
 						decodeFIL(_in, prev);
 						prev = null;
 						break;
 				}
 			}
-			Logger.debug("END");
+			Log.debug("END");
 			content = false;
 			prev = null;
 		}
@@ -292,7 +292,7 @@ public class SyntacticElements implements SyntaxConstants {
 		int chs = 1;
 		if(sbrPresent&&config.isSBREnabled()) {
 			if(data[channel].length==config.getFrameLength())
-			    Logger.warn("SBR data present, but buffer has normal size!");
+			    Log.warn("SBR data present, but buffer has normal size!");
 			final SBR sbr = scelfe.getSBR();
 			if(sbr.isPSUsed()) {
 				chs = 2;
@@ -362,7 +362,7 @@ public class SyntacticElements implements SyntaxConstants {
 		//SBR
 		if(sbrPresent&&config.isSBREnabled()) {
 			if(data[channel].length==config.getFrameLength()) 
-			    Logger.warn("SBR data present, but buffer has normal size!");
+			    Log.warn("SBR data present, but buffer has normal size!");
 			cpe.getSBR()._process(data[channel], data[channel+1], false);
 		}
 	}

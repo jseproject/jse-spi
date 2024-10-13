@@ -27,7 +27,7 @@
 package net.sourceforge.jaad.aac.tools;
 
 import net.sourceforge.jaad.aac.AACException;
-import net.sourceforge.jaad.aac.Logger;
+import net.sourceforge.jaad.aac.Log;
 import net.sourceforge.jaad.aac.SampleFrequency;
 import net.sourceforge.jaad.aac.syntax.IBitStream;
 import net.sourceforge.jaad.aac.syntax.ICSInfo;
@@ -79,7 +79,7 @@ public class ICPrediction {
 		for(int sfb = 0; sfb<length; sfb++) {
 			predictionUsed[sfb] = _in.readBool();
 		}
-		Logger.warn("ICPrediction: maxSFB={0}, maxPredSFB={1}", new int[]{maxSFB, maxPredSFB});
+		Log.warn("ICPrediction: maxSFB={0}, maxPredSFB={1}", new int[]{maxSFB, maxPredSFB});
 		/*//if maxSFB<maxPredSFB set remaining to false
 		for(int sfb = length; sfb<maxPredSFB; sfb++) {
 		predictionUsed[sfb] = false;

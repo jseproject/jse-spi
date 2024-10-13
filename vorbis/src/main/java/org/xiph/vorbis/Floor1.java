@@ -2,6 +2,8 @@
  * Copyright (c) 2024 Naoko Mitsurugi
  * Copyright (c) 2019 Alexey Kuznetsov
  * Copyright (c) 2002-2018 Xiph.Org Foundation
+ * Copyright (c) 1994-1996 James Gosling,
+ *                         Kevin A. Smith, Sun Microsystems, Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -856,8 +858,10 @@ err_out:
                         final int hy = post_Y(fit_valueA, fit_valueB, hn);
 
                         if (ly == -1 || hy == -1) {
-                            System.err.println("ERROR: We want to bound/minimize *local*, not global");
-                            System.exit(1);// FIXME is exit(1) is correct?
+                            //System.err.println("ERROR: We want to bound/minimize *local*, not global");
+                            //System.exit(1);
+                            // Naoko: FIXED. throw exception instead of exit(1).
+                            throw new IllegalStateException("ERROR: We want to bound/minimize *local*, not global");
                         }
 
                         if (inspect_error(lx, hx, ly, hy, logmask, logfft, logmdct, info)) {

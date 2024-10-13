@@ -87,9 +87,9 @@ public class Decoder implements SyntaxConstants {
 
         _in = new BitStream();
 
-        Logger.debug("profile: {0}", config.getProfile());
-        Logger.debug("sf: {0}", config.getSampleFrequency().getFrequency());
-        Logger.debug("channels: {0}", config.getChannelConfiguration().getDescription());
+        Log.debug("profile: {0}", config.getProfile());
+        Log.debug("sf: {0}", config.getSampleFrequency().getFrequency());
+        Log.debug("channels: {0}", config.getChannelConfiguration().getDescription());
     }
 
     public AACDecoderConfig getConfig() {
@@ -109,14 +109,14 @@ public class Decoder implements SyntaxConstants {
     public void decodeFrame(byte[] frame, SampleBuffer buffer) throws AACException {
         if (frame != null)
             _in.setData(frame);
-        Logger.debug("bits left " + _in.getBitsLeft());
+        Log.debug("bits left " + _in.getBitsLeft());
         try {
             decode(buffer);
         } catch (AACException e) {
             if (!e.isEndOfStream())
                 throw e;
             else
-                Logger.warn("unexpected end of frame");
+                Log.warn("unexpected end of frame");
         }
     }
 

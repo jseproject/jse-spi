@@ -61,12 +61,12 @@ public class FlacAudioCompressionWriter extends AudioCompressionWriter {
 
     @Override
     public int write(AudioInputStream stream, AudioFileFormat.Type fileType, float quality, OutputStream out) throws IOException, IllegalArgumentException {
-        return WRITER.write(stream, FlacFileFormatType.withCompressionLevel(fileType, Math.round((1 - quality) * 10)), out);
+        return WRITER.write(stream, FlacFileFormatType.withCompressionLevel(fileType, Math.round((1 - quality) * 0.8f)), out);
     }
 
     @Override
     public int write(AudioInputStream stream, AudioFileFormat.Type fileType, float quality, File out) throws IOException, IllegalArgumentException {
-        return WRITER.write(stream, FlacFileFormatType.withCompressionLevel(fileType, Math.round((1 - quality) * 10)), out);
+        return WRITER.write(stream, FlacFileFormatType.withCompressionLevel(fileType, Math.round((1 - quality) * 0.8f)), out);
     }
 
 }

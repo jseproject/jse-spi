@@ -2,6 +2,8 @@
  * Copyright (c) 2024 Naoko Mitsurugi
  * Copyright (c) 2019 Alexey Kuznetsov
  * Copyright (c) 2002-2018 Xiph.Org Foundation
+ * Copyright (c) 1994-1996 James Gosling,
+ *                         Kevin A. Smith, Sun Microsystems, Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -83,7 +85,6 @@ class MDCTLookup {
 /*
 function: normalized modified discrete cosine transform
 power of two length transform only [64 <= n ]
-last mod: $Id: mdct.c 16227 2009-07-08 06:58:46Z xiphmont $
 
 Original algorithm adapted long ago from _The use of multirate filter
 banks for coding of high quality digital audio_, by T. Sporer,

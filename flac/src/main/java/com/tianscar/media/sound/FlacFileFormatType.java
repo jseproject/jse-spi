@@ -44,9 +44,9 @@ public class FlacFileFormatType extends AudioFileFormat.Type {
         super(name, extension);
     }
 
-    int compressionLevel = 3;
+    int compressionLevel = 2;
     static AudioFileFormat.Type withCompressionLevel(AudioFileFormat.Type type, int compressionLevel) {
-        if (type instanceof FlacFileFormatType) ((FlacFileFormatType) type).compressionLevel = compressionLevel;
+        if (type instanceof FlacFileFormatType) ((FlacFileFormatType) type).compressionLevel = Math.max(0, Math.min(8, compressionLevel));
         return type;
     }
 

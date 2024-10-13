@@ -27,7 +27,7 @@
 package net.sourceforge.jaad.aac.syntax;
 
 import net.sourceforge.jaad.aac.AACException;
-import net.sourceforge.jaad.aac.Logger;
+import net.sourceforge.jaad.aac.Log;
 import net.sourceforge.jaad.aac.Profile;
 import net.sourceforge.jaad.aac.SampleFrequency;
 
@@ -124,15 +124,15 @@ public class PCE extends Element {
 		validCCElementsCount = _in.readBits(4);
 
 		if(monoMixdown = _in.readBool()) {
-			Logger.warn("mono mixdown present, but not yet supported");
+			Log.warn("mono mixdown present, but not yet supported");
 			monoMixdownElementNumber = _in.readBits(4);
 		}
 		if(stereoMixdown = _in.readBool()) {
-			Logger.warn("stereo mixdown present, but not yet supported");
+			Log.warn("stereo mixdown present, but not yet supported");
 			stereoMixdownElementNumber = _in.readBits(4);
 		}
 		if(matrixMixdownIDXPresent = _in.readBool()) {
-			Logger.warn("matrix mixdown present, but not yet supported");
+			Log.warn("matrix mixdown present, but not yet supported");
 			matrixMixdownIDX = _in.readBits(2);
 			pseudoSurround = _in.readBool();
 		}

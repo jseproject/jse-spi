@@ -1,23 +1,34 @@
 /*
  * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 2008 Christopher G. Jennings
- * Copyright (c) 1999-2010 JavaZOOM
- * Copyright (c) 1999 Mat McGowan
+ * Copyright (c) 1999-2010 The LAME Project
+ * Copyright (c) 1999-2008 JavaZOOM
+ * Copyright (c) 2001-2002 Naoki Shibata
+ * Copyright (c) 2001 Jonathan Dee
+ * Copyright (c) 2000-2017 Robert Hegemann
+ * Copyright (c) 2000-2008 Gabriel Bouvigne
+ * Copyright (c) 2000-2005 Alexander Leidinger
+ * Copyright (c) 2000 Don Melton
+ * Copyright (c) 1999-2005 Takehiro Tominaga
+ * Copyright (c) 1999-2001 Mark Taylor
+ * Copyright (c) 1999 Albert L. Faber
+ * Copyright (c) 1988, 1993 Ron Mayer
+ * Copyright (c) 1998 Michael Cheng
  * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1993-1994 Tobias Bading
- * Copyright (c) 1991 MPEG Software Simulation Group
+ * Copyright (c) 1995-1997 Michael Hipp
+ * Copyright (c) 1993-1994 Tobias Bading,
+ *                         Berlin University of Technology
  *
  * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * - This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Library General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * - You should have received a copy of the GNU Library General Public
+ * - You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
@@ -464,17 +475,49 @@ public final class Bitstream
 			    (((headerstring & 0x000000C0) == 0x000000C0) == single_ch_mode);
 		}
 
-		// filter out invalid sample rate
+		// filter out invalid params
 		if (sync)
-			sync = (((headerstring >>> 10) & 3)!=3);
-		// filter out invalid layer
-		if (sync)
-			sync = (((headerstring >>> 17) & 3)!=0);
-		// filter out invalid version
-		if (sync)
-			sync = (((headerstring >>> 19) & 3)!=1);
+			sync = isSyncwordMp123(
+					new byte[] {(byte) (headerstring >>> 24), (byte) (headerstring >>> 16), (byte) (headerstring >>> 8), (byte) headerstring
+                    });
 
 		return sync;
+	}
+
+	private static final byte sAbl2[] = { 0, 7, 7, 7, 0, 7, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8 };
+	private boolean isSyncwordMp123(byte[] data) {
+		if( (data[0] & 0xFF) != 0xFF ) {
+			return false;//* first 8 bits must be '1'
+		}
+		if( (data[1] & 0xE0) != 0xE0 ) {
+			return false;// next 3 bits are also
+		}
+		if( (data[1] & 0x18) == 0x08) {
+			return false;// no MPEG-1, -2 or -2.5
+		}
+		switch( data[1] & 0x06 ) {
+			case 0x00:// illegal Layer
+				return false;
+			case 0x02:// Layer3
+				break;
+			case 0x04:// Layer2
+				break;
+			case 0x06:// Layer1
+				break;
+		}
+		if( (data[2] & 0xF0) == 0xF0 ) {
+			return false;// bad bitrate
+		}
+		if( (data[2] & 0x0C) == 0x0C ) {
+			return false;// no sample frequency with (32,44.1,48)/(1,2,4)
+		}
+		if( (data[1] & 0x18) == 0x18 && (data[1] & 0x06) == 0x04 && ((sAbl2[((int)data[2] & 0xff) >> 4] & (1 << (((int)data[3] & 0xff) >> 6))) != 0) ) {
+			return false;
+		}
+		if( (data[3] & 3) == 2 ) {
+			return false;// reserved enphasis mode
+		}
+		return true;
 	}
 
 	/**

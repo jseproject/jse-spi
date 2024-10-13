@@ -1,23 +1,34 @@
 /*
  * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 2008 Christopher G. Jennings
- * Copyright (c) 1999-2010 JavaZOOM
- * Copyright (c) 1999 Mat McGowan
+ * Copyright (c) 1999-2010 The LAME Project
+ * Copyright (c) 1999-2008 JavaZOOM
+ * Copyright (c) 2001-2002 Naoki Shibata
+ * Copyright (c) 2001 Jonathan Dee
+ * Copyright (c) 2000-2017 Robert Hegemann
+ * Copyright (c) 2000-2008 Gabriel Bouvigne
+ * Copyright (c) 2000-2005 Alexander Leidinger
+ * Copyright (c) 2000 Don Melton
+ * Copyright (c) 1999-2005 Takehiro Tominaga
+ * Copyright (c) 1999-2001 Mark Taylor
+ * Copyright (c) 1999 Albert L. Faber
+ * Copyright (c) 1988, 1993 Ron Mayer
+ * Copyright (c) 1998 Michael Cheng
  * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1993-1994 Tobias Bading
- * Copyright (c) 1991 MPEG Software Simulation Group
+ * Copyright (c) 1995-1997 Michael Hipp
+ * Copyright (c) 1993-1994 Tobias Bading,
+ *                         Berlin University of Technology
  *
  * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * - This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Library General Public License for more details.
+ * Lesser General Public License for more details.
  *
- * - You should have received a copy of the GNU Library General Public
+ * - You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
@@ -82,42 +93,96 @@ public class Mp3FormatConversionProvider extends TMatrixFormatConversionProvider
     }
 
     private static final AudioFormat[] OUTPUT_FORMATS = new AudioFormat[] {
-            new AudioFormat(8000.0f, 16, 1, true, false), // 0
-            new AudioFormat(8000.0f, 16, 1, true, true),  // 1
-            new AudioFormat(8000.0f, 16, 2, true, false), // 2
-            new AudioFormat(8000.0f, 16, 2, true, true),  // 3
-            new AudioFormat(11025.0f, 16, 1, true, false), // 4
-            new AudioFormat(11025.0f, 16, 1, true, true),  // 5
-            new AudioFormat(11025.0f, 16, 2, true, false), // 6
-            new AudioFormat(11025.0f, 16, 2, true, true),  // 7
-            new AudioFormat(12000.0f, 16, 1, true, false), // 8
-            new AudioFormat(12000.0f, 16, 1, true, true),  // 9
-            new AudioFormat(12000.0f, 16, 2, true, false), // 10
-            new AudioFormat(12000.0f, 16, 2, true, true),  // 11
-            new AudioFormat(16000.0f, 16, 1, true, false), // 12
-            new AudioFormat(16000.0f, 16, 1, true, true),  // 13
-            new AudioFormat(16000.0f, 16, 2, true, false), // 14
-            new AudioFormat(16000.0f, 16, 2, true, true),  // 15
-            new AudioFormat(22050.0f, 16, 1, true, false), // 16
-            new AudioFormat(22050.0f, 16, 1, true, true),  // 17
-            new AudioFormat(22050.0f, 16, 2, true, false), // 18
-            new AudioFormat(22050.0f, 16, 2, true, true),  // 19
-            new AudioFormat(24000.0f, 16, 1, true, false), // 20
-            new AudioFormat(24000.0f, 16, 1, true, true),  // 21
-            new AudioFormat(24000.0f, 16, 2, true, false), // 22
-            new AudioFormat(24000.0f, 16, 2, true, true),  // 23
-            new AudioFormat(32000.0f, 16, 1, true, false), // 24
-            new AudioFormat(32000.0f, 16, 1, true, true),  // 25
-            new AudioFormat(32000.0f, 16, 2, true, false), // 26
-            new AudioFormat(32000.0f, 16, 2, true, true),  // 27
-            new AudioFormat(44100.0f, 16, 1, true, false), // 28
-            new AudioFormat(44100.0f, 16, 1, true, true),  // 29
-            new AudioFormat(44100.0f, 16, 2, true, false), // 30
-            new AudioFormat(44100.0f, 16, 2, true, true),  // 31
-            new AudioFormat(48000.0f, 16, 1, true, false), // 32
-            new AudioFormat(48000.0f, 16, 1, true, true),  // 33
-            new AudioFormat(48000.0f, 16, 2, true, false), // 34
-            new AudioFormat(48000.0f, 16, 2, true, true),  // 35
+            new AudioFormat(8000.0f, 16, 1, true, false),
+            new AudioFormat(8000.0f, 16, 1, true, true),
+            new AudioFormat(8000.0f, 16, 2, true, false),
+            new AudioFormat(8000.0f, 16, 2, true, true),
+            new AudioFormat(8000.0f, 24, 1, false, false),
+            new AudioFormat(8000.0f, 24, 1, false, true),
+            new AudioFormat(8000.0f, 24, 2, false, false),
+            new AudioFormat(8000.0f, 24, 2, false, true),
+            new AudioFormat(8000.0f, 8, 1, false, false),
+            new AudioFormat(8000.0f, 8, 2, false, false),
+            new AudioFormat(11025.0f, 16, 1, true, false),
+            new AudioFormat(11025.0f, 16, 1, true, true),
+            new AudioFormat(11025.0f, 16, 2, true, false),
+            new AudioFormat(11025.0f, 16, 2, true, true),
+            new AudioFormat(11025.0f, 24, 1, false, false),
+            new AudioFormat(11025.0f, 24, 1, false, true),
+            new AudioFormat(11025.0f, 24, 2, false, false),
+            new AudioFormat(11025.0f, 24, 2, false, true),
+            new AudioFormat(11025.0f, 8, 1, false, false),
+            new AudioFormat(11025.0f, 8, 2, false, false),
+            new AudioFormat(12000.0f, 16, 1, true, false),
+            new AudioFormat(12000.0f, 16, 1, true, true),
+            new AudioFormat(12000.0f, 16, 2, true, false),
+            new AudioFormat(12000.0f, 16, 2, true, true),
+            new AudioFormat(12000.0f, 24, 1, false, false),
+            new AudioFormat(12000.0f, 24, 1, false, true),
+            new AudioFormat(12000.0f, 24, 2, false, false),
+            new AudioFormat(12000.0f, 24, 2, false, true),
+            new AudioFormat(12000.0f, 8, 1, false, false),
+            new AudioFormat(12000.0f, 8, 2, false, false),
+            new AudioFormat(16000.0f, 16, 1, true, false),
+            new AudioFormat(16000.0f, 16, 1, true, true),
+            new AudioFormat(16000.0f, 16, 2, true, false),
+            new AudioFormat(16000.0f, 16, 2, true, true),
+            new AudioFormat(16000.0f, 24, 1, false, false),
+            new AudioFormat(16000.0f, 24, 1, false, true),
+            new AudioFormat(16000.0f, 24, 2, false, false),
+            new AudioFormat(16000.0f, 24, 2, false, true),
+            new AudioFormat(16000.0f, 8, 1, false, false),
+            new AudioFormat(16000.0f, 8, 2, false, false),
+            new AudioFormat(22050.0f, 16, 1, true, false),
+            new AudioFormat(22050.0f, 16, 1, true, true),
+            new AudioFormat(22050.0f, 16, 2, true, false),
+            new AudioFormat(22050.0f, 16, 2, true, true),
+            new AudioFormat(22050.0f, 24, 1, false, false),
+            new AudioFormat(22050.0f, 24, 1, false, true),
+            new AudioFormat(22050.0f, 24, 2, false, false),
+            new AudioFormat(22050.0f, 24, 2, false, true),
+            new AudioFormat(22050.0f, 8, 1, false, false),
+            new AudioFormat(22050.0f, 8, 2, false, false),
+            new AudioFormat(24000.0f, 16, 1, true, false),
+            new AudioFormat(24000.0f, 16, 1, true, true),
+            new AudioFormat(24000.0f, 16, 2, true, false),
+            new AudioFormat(24000.0f, 16, 2, true, true),
+            new AudioFormat(24000.0f, 24, 1, false, false),
+            new AudioFormat(24000.0f, 24, 1, false, true),
+            new AudioFormat(24000.0f, 24, 2, false, false),
+            new AudioFormat(24000.0f, 24, 2, false, true),
+            new AudioFormat(24000.0f, 8, 1, false, false),
+            new AudioFormat(24000.0f, 8, 2, false, false),
+            new AudioFormat(32000.0f, 16, 1, true, false),
+            new AudioFormat(32000.0f, 16, 1, true, true),
+            new AudioFormat(32000.0f, 16, 2, true, false),
+            new AudioFormat(32000.0f, 16, 2, true, true),
+            new AudioFormat(32000.0f, 24, 1, false, false),
+            new AudioFormat(32000.0f, 24, 1, false, true),
+            new AudioFormat(32000.0f, 24, 2, false, false),
+            new AudioFormat(32000.0f, 24, 2, false, true),
+            new AudioFormat(32000.0f, 8, 1, false, false),
+            new AudioFormat(32000.0f, 8, 2, false, false),
+            new AudioFormat(44100.0f, 16, 1, true, false),
+            new AudioFormat(44100.0f, 16, 1, true, true),
+            new AudioFormat(44100.0f, 16, 2, true, false),
+            new AudioFormat(44100.0f, 16, 2, true, true),
+            new AudioFormat(44100.0f, 24, 1, false, false),
+            new AudioFormat(44100.0f, 24, 1, false, true),
+            new AudioFormat(44100.0f, 24, 2, false, false),
+            new AudioFormat(44100.0f, 24, 2, false, true),
+            new AudioFormat(44100.0f, 8, 1, false, false),
+            new AudioFormat(44100.0f, 8, 2, false, false),
+            new AudioFormat(48000.0f, 16, 1, true, false),
+            new AudioFormat(48000.0f, 16, 1, true, true),
+            new AudioFormat(48000.0f, 16, 2, true, false),
+            new AudioFormat(48000.0f, 16, 2, true, true),
+            new AudioFormat(48000.0f, 24, 1, false, false),
+            new AudioFormat(48000.0f, 24, 1, false, true),
+            new AudioFormat(48000.0f, 24, 2, false, false),
+            new AudioFormat(48000.0f, 24, 2, false, true),
+            new AudioFormat(48000.0f, 8, 1, false, false),
+            new AudioFormat(48000.0f, 8, 2, false, false),
     };
 
     private static final boolean t = true;
@@ -130,43 +195,77 @@ public class Mp3FormatConversionProvider extends TMatrixFormatConversionProvider
     static {
         for (int i = 0; i < 9; i ++) {
             CONVERSIONS[18 * i] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,t,t,f,f,f,f, f,f,f,f,f,f};	// 0
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,t,t,f,f,t,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 0
             CONVERSIONS[18 * i + 1] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,t,t,f,f, f,f,f,f,f,f};	// 1
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,t,t,f,t, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 1
             CONVERSIONS[18 * i + 2] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,t,t, f,f,f,f,f,f};	// 2
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,t,t,f,f,t,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 2
             CONVERSIONS[18 * i + 3] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,f,f};	// 3
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,t,t,f,t
+                            , f,f,f,f,f,f,f,f,f,f};	// 3
             CONVERSIONS[18 * i + 4] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f};	// 4
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , t,t,f,f,t,t,f,f,t,f};	// 4
             CONVERSIONS[18 * i + 5] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,t,t};	// 5
-
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,t,t,f,f,t,t,f,t};	// 5
             CONVERSIONS[18 * i + 6] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 18
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,t,t,f,f,t,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 18
             CONVERSIONS[18 * i + 7] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,t,t,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 19
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,t,t,f,t,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 19
             CONVERSIONS[18 * i + 8] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,t,t,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 20
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            t,t,f,f,t,t,f,f,t,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 20
             CONVERSIONS[18 * i + 9] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,t,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 21
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,t,t,f,f,t,t,f,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 21
             CONVERSIONS[18 * i + 10] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 22
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, t,t,f,f,t,t,f,f,t,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 22
             CONVERSIONS[18 * i + 11] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,f,f,f,f, f,f,f,f,f,f};	// 23
-
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,t,t,f,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 23
             CONVERSIONS[18 * i + 12] =
-                    new boolean[] {t,t,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 36
+                    new boolean[] {t,t,f,f,t,t,f,f,t,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 36
             CONVERSIONS[18 * i + 13] =
-                    new boolean[] {f,f,t,t,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 37
+                    new boolean[] {f,f,t,t,f,f,t,t,f,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 37
             CONVERSIONS[18 * i + 14] =
-                    new boolean[] {f,f,f,f,t,t,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 38
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, t,t,f,f,t,t,f,f,t,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 38
             CONVERSIONS[18 * i + 15] =
-                    new boolean[] {f,f,f,f,f,f,t,t,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 39
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,t,t,f,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 39
             CONVERSIONS[18 * i + 16] =
-                    new boolean[] {f,f,f,f,f,f,f,f,t,t, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 40
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, t,t,f,f,t,t,f,f,t,f, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 40
             CONVERSIONS[18 * i + 17] =
-                    new boolean[] {f,f,f,f,f,f,f,f,f,f, t,t,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f};	// 41
+                    new boolean[] {f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,t,t,f,f,t,t,f,t, f,f,f,f,f,f,f,f,f,f,
+                            f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f, f,f,f,f,f,f,f,f,f,f
+                            , f,f,f,f,f,f,f,f,f,f};	// 41
         }
     }
 

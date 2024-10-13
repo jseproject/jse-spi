@@ -2,6 +2,8 @@
  * Copyright (c) 2024 Naoko Mitsurugi
  * Copyright (c) 2019 Alexey Kuznetsov
  * Copyright (c) 2002-2018 Xiph.Org Foundation
+ * Copyright (c) 1994-1996 James Gosling,
+ *                         Kevin A. Smith, Sun Microsystems, Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

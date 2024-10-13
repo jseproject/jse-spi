@@ -1,4 +1,4 @@
-version = '1.0.1'
+version = '1.0.2'
 
 dependencies {
 }
@@ -16,8 +16,8 @@ publishing {
                 url = 'https://github.com/jseproject/jse-spi'
                 licenses {
                     license {
-                        name = 'GNU Library or Lesser General Public License, Version 2.0'
-                        url = 'http://www.gnu.org/licenses/old-licenses/lgpl-2.0.txt'
+                        name = 'GNU Lesser General Public License, Version 2.1'
+                        url = 'http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt'
                     }
                 }
                 developers {
