@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 import java.io.IOException;
@@ -152,7 +116,7 @@ public class LAME {
 		return (float)Math.cos( Math.PI / 2. * x  );
 	}
 
-	private static final void lame_init_params_ppflt(final LAME_InternalFlags gfc ) {
+	private static final void init_params_ppflt(final InternalFlags gfc ) {
 		final SessionConfig cfg = gfc.cfg;
 
 		/***************************************************************/
@@ -310,8 +274,8 @@ public class LAME {
 
 	/* set internal feature flags.  USER should not access these since
 	 * some combinations will produce strange results */
-	private static final void lame_init_qval(final LAME_GlobalFlags gfp) {
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+	private static final void init_qval(final GlobalFlags gfp) {
+		final InternalFlags gfc = gfp.internal_flags;
 		final SessionConfig cfg = gfc.cfg;
 
 		switch( gfp.quality ) {
@@ -516,22 +480,22 @@ public class LAME {
 	 *  lame_init_qval(gfp );
 	 *
 	 ********************************************************************/
-	public static final int lame_init_params(final LAME_GlobalFlags gfp) {
-		if( ! gfp.is_lame_global_flags_valid() ) {
+	public static final int init_params(final GlobalFlags gfp) {
+		if( ! gfp.is_valid() ) {
 			return -1;
 		}
 
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		if( gfc == null ) {
 			return -1;
 		}
 
-		if( gfc.is_lame_internal_flags_valid() ) {
+		if( gfc.is_valid() ) {
 			return -1;
 		} /* already initialized */
 
 		/* start updating lame internal flags */
-		gfc.class_id = LAME_InternalFlags.LAME_ID;
+		gfc.class_id = InternalFlags.LAME_ID;
 		gfc.lame_init_params_successful = false; /* will be set to one, when we get through until the end */
 
 		if( gfp.num_channels < 1 || 2 < gfp.num_channels ) {
@@ -819,7 +783,7 @@ public class LAME {
 		/**********************************************************************/
 		/* compute info needed for polyphase filter (filter type==0, default) */
 		/**********************************************************************/
-		lame_init_params_ppflt( gfc );
+		init_params_ppflt( gfc );
 
 		/*******************************************************
 		* samplerate and bitrate index
@@ -967,7 +931,7 @@ public class LAME {
 			}
 
 			if( cfg.vbr == vbr_off ) {
-				gfp.lame_set_VBR_mean_bitrate_kbps( gfp.brate );
+				gfp.set_VBR_mean_bitrate_kbps( gfp.brate );
 			}
 			/* second, set parameters depending on bitrate */
 			Presets.apply_preset( gfp, gfp.VBR_mean_bitrate_kbps, false );
@@ -1034,7 +998,7 @@ public class LAME {
 		cfg.compression_ratio = gfp.compression_ratio;
 
 		/* initialize internal qval settings */
-		lame_init_qval( gfp );
+		init_qval( gfp );
 
 		/*  automatic ATH adjustment on */
 		if( gfp.athaa_type < 0 ) {
@@ -1046,8 +1010,8 @@ public class LAME {
 		/* initialize internal adaptive ATH settings  -jd */
 		gfc.ATH.aa_sensitivity_p = (float)Math.pow( 10.0, gfp.athaa_sensitivity / -10.0 );
 
-		if( gfp.short_blocks == LAME_GlobalFlags.short_block_not_set ) {
-			gfp.short_blocks = LAME_GlobalFlags.short_block_allowed;
+		if( gfp.short_blocks == GlobalFlags.short_block_not_set ) {
+			gfp.short_blocks = GlobalFlags.short_block_allowed;
 		}
 
 		/*Note Jan/2003: Many hardware decoders cannot handle short blocks in regular
@@ -1057,26 +1021,26 @@ public class LAME {
 		   how to handle this.  No other encoders allow uncoupled short blocks,
 		   even though it is in the standard.  */
 		/* rh 20040217: coupling makes no sense for mono and dual-mono streams */
-		if( gfp.short_blocks == LAME_GlobalFlags.short_block_allowed
+		if( gfp.short_blocks == GlobalFlags.short_block_allowed
 				&& (cfg.mode == JOINT_STEREO || cfg.mode == STEREO) ) {
-			gfp.short_blocks = LAME_GlobalFlags.short_block_coupled;
+			gfp.short_blocks = GlobalFlags.short_block_coupled;
 		}
 
 		cfg.short_blocks = gfp.short_blocks;
 
-		if( gfp.lame_get_quant_comp() < 0 ) {
-			gfp.lame_set_quant_comp( 1 );
+		if( gfp.get_quant_comp() < 0 ) {
+			gfp.set_quant_comp( 1 );
 		}
-		if( gfp.lame_get_quant_comp_short() < 0 ) {
-			gfp.lame_set_quant_comp_short( 0 );
+		if( gfp.get_quant_comp_short() < 0 ) {
+			gfp.set_quant_comp_short( 0 );
 		}
 
-		if( gfp.lame_get_msfix() < 0 ) {
-			gfp.lame_set_msfix( 0 );
+		if( gfp.get_msfix() < 0 ) {
+			gfp.set_msfix( 0 );
 		}
 
 		/* select psychoacoustic model */
-		gfp.lame_set_exp_nspsytune( gfp.lame_get_exp_nspsytune() | 1 );
+		gfp.set_exp_nspsytune( gfp.get_exp_nspsytune() | 1 );
 
 		if( gfp.ATHtype < 0 ) {
 			gfp.ATHtype = 4;
@@ -1179,7 +1143,7 @@ public class LAME {
 			gfc.sv_enc.slot_lag = gfc.sv_enc.frac_SpF = (int)(((cfg.version + 1) * 72000L * cfg.avg_bitrate) % cfg.samplerate);
 		}
 
-		lame_init_bitstream( gfp );
+		init_bitstream( gfp );
 
 		QuantizePVT.iteration_init( gfc );
 		PsyModel.psymodel_init( gfp );
@@ -1191,7 +1155,7 @@ public class LAME {
 		return 0;
 	}
 
-	private static final int update_inbuffer_size(final LAME_InternalFlags gfc, final int nsamples) {
+	private static final int update_inbuffer_size(final InternalFlags gfc, final int nsamples) {
 		final EncStateVar esv = gfc.sv_enc;
 		if( esv.in_buffer_0 == null || esv.in_buffer_nsamples < nsamples ) {
 			esv.in_buffer_0 = new float[ nsamples ];
@@ -1238,10 +1202,10 @@ public class LAME {
 	 *                         lame_encode_buffer_int()
 	 * etc... depending on what type of data they are working with.
 	 */
-	private static final int lame_encode_buffer_sample_t(final LAME_InternalFlags gfc,
-		int nsamples, final byte[] mp3buf, int mp3buf_offset, final int mp3buf_size)
+	private static final int encode_buffer_sample_t(final InternalFlags gfc,
+													int nsamples, final byte[] mp3buf, int mp3buf_offset, final int mp3buf_size)
 	{
-		if( gfc.class_id != LAME_InternalFlags.LAME_ID ) {
+		if( gfc.class_id != InternalFlags.LAME_ID ) {
 			return -3;
 		}
 
@@ -1320,7 +1284,7 @@ public class LAME {
 					buf_size = Integer.MAX_VALUE;
 				}
 
-				final int ret = Encoder.lame_encode_mp3_frame( gfc, mfbuf[0], mfbuf[1], mp3buf, mp3buf_offset, buf_size );
+				final int ret = Encoder.encode_mp3_frame( gfc, mfbuf[0], mfbuf[1], mp3buf, mp3buf_offset, buf_size );
 
 				if( ret < 0 ) {
 					return ret;
@@ -1354,9 +1318,9 @@ public class LAME {
 	/**
 	 * java: r = null for interleaved
 	 */
-	private static final void lame_copy_inbuffer(final LAME_InternalFlags gfc,
-		final Object l, final Object r, final int offset, final int nsamples,
-		final int /* PCMSampleType */ pcm_type, final int jump, final float s)
+	private static final void copy_inbuffer(final InternalFlags gfc,
+											final Object l, final Object r, final int offset, final int nsamples,
+											final int /* PCMSampleType */ pcm_type, final int jump, final float s)
 	{
 		final SessionConfig cfg = gfc.cfg;
 		final EncStateVar esv = gfc.sv_enc;
@@ -1495,13 +1459,13 @@ public class LAME {
 		}
 	}
 
-	private static final int lame_encode_buffer_template(final LAME_GlobalFlags gfp,
-		final Object buffer_l, final Object buffer_r, final int offset, final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size, final int /* PCMSampleType */ pcm_type, final int aa, final float norm)
+	private static final int encode_buffer_template(final GlobalFlags gfp,
+													final Object buffer_l, final Object buffer_r, final int offset, final int nsamples,
+													final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size, final int /* PCMSampleType */ pcm_type, final int aa, final float norm)
 	{
-		if( gfp.is_lame_global_flags_valid() ) {
-			final LAME_InternalFlags gfc = gfp.internal_flags;
-			if( gfc.is_lame_internal_flags_valid() ) {
+		if( gfp.is_valid() ) {
+			final InternalFlags gfc = gfp.internal_flags;
+			if( gfc.is_valid() ) {
 				final SessionConfig cfg = gfc.cfg;
 
 				if( nsamples == 0 ) {
@@ -1519,15 +1483,15 @@ public class LAME {
 					if( buffer_l == null ) {// java variant: buffer_r may be null for interleaved
 						return 0;
 					}
-					lame_copy_inbuffer( gfc, buffer_l, buffer_r, offset, nsamples, pcm_type, aa, norm );
+					copy_inbuffer( gfc, buffer_l, buffer_r, offset, nsamples, pcm_type, aa, norm );
 				} else {
 					if( buffer_l == null ) {
 						return 0;
 					}
-					lame_copy_inbuffer( gfc, buffer_l, buffer_l, offset, nsamples, pcm_type, aa, norm );
+					copy_inbuffer( gfc, buffer_l, buffer_l, offset, nsamples, pcm_type, aa, norm );
 				}
 
-				return lame_encode_buffer_sample_t( gfc, nsamples, mp3buf, mp3buf_offset, mp3buf_size );
+				return encode_buffer_sample_t( gfc, nsamples, mp3buf, mp3buf_offset, mp3buf_size );
 			}
 		}
 		return -3;
@@ -1565,69 +1529,69 @@ public class LAME {
 	 * This will overwrite the data in buffer_l[] and buffer_r[].
 	 *
 	 */
-	public static final int lame_encode_buffer(final LAME_GlobalFlags gfp,
-		final short pcm_l[], final short pcm_r[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer(final GlobalFlags gfp,
+										  final short pcm_l[], final short pcm_r[], final int nsamples,
+										  final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
-		return lame_encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_short_type, 1, 1.0f );
+		return encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_short_type, 1, 1.0f );
 	}
 
 	/** as lame_encode_buffer, but for 'float's.
 	 * !! NOTE: !! data must still be scaled to be in the same range as
 	 * short int, +/- 32768
 	 */
-	public static final int lame_encode_buffer_float(final LAME_GlobalFlags gfp,
-		final float pcm_l[], final float pcm_r[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_float(final GlobalFlags gfp,
+												final float pcm_l[], final float pcm_r[], final int nsamples,
+												final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- 32768 for full scale */
-		return lame_encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_float_type, 1, 1.0f );
+		return encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_float_type, 1, 1.0f );
 	}
 
 	/** as lame_encode_buffer, but for 'float's.
 	 * !! NOTE: !! data must be scaled to +/- 1 full scale
 	 */
-	public static final int lame_encode_buffer_ieee_float(final LAME_GlobalFlags gfp,
-		final float pcm_l[], final float pcm_r[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_ieee_float(final GlobalFlags gfp,
+													 final float pcm_l[], final float pcm_r[], final int nsamples,
+													 final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- 1.0 for full scale */
-		return lame_encode_buffer_template(gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_float_type, 1, 32767.0f );
+		return encode_buffer_template(gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_float_type, 1, 32767.0f );
 	}
 
-	public static final int lame_encode_buffer_interleaved_ieee_float(final LAME_GlobalFlags gfp,
-		final float pcm[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size ) {
+	public static final int encode_buffer_interleaved_ieee_float(final GlobalFlags gfp,
+																 final float pcm[], final int nsamples,
+																 final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size ) {
 		/* input is assumed to be normalized to +/- 1.0 for full scale */
-		return lame_encode_buffer_template( gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_float_type, 2, 32767.0f  );
+		return encode_buffer_template( gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_float_type, 2, 32767.0f  );
 	}
 
 	/** as lame_encode_buffer, but for 'double's.
 	 * !! NOTE: !! data must be scaled to +/- 1 full scale
 	 */
-	public static final int lame_encode_buffer_ieee_double(final LAME_GlobalFlags gfp,
-		final double pcm_l[], final double pcm_r[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_ieee_double(final GlobalFlags gfp,
+													  final double pcm_l[], final double pcm_r[], final int nsamples,
+													  final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- 1.0 for full scale */
-		return lame_encode_buffer_template(gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_double_type, 1, 32767.0f );
+		return encode_buffer_template(gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_double_type, 1, 32767.0f );
 	}
 
-	public static final int lame_encode_buffer_interleaved_ieee_double(final LAME_GlobalFlags gfp,
-		final double pcm[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_interleaved_ieee_double(final GlobalFlags gfp,
+																  final double pcm[], final int nsamples,
+																  final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- 1.0 for full scale */
-		return lame_encode_buffer_template( gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_double_type, 2, 32767.0f );
+		return encode_buffer_template( gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_double_type, 2, 32767.0f );
 	}
 
-	public static final int lame_encode_buffer_int(final LAME_GlobalFlags gfp,
-		final int pcm_l[], final int pcm_r[], final int offset, final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_int(final GlobalFlags gfp,
+											  final int pcm_l[], final int pcm_r[], final int offset, final int nsamples,
+											  final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- MAX_INT for full scale */
 		final float norm = (1.0f / (1L << (Integer.SIZE - 16)));
-		return lame_encode_buffer_template( gfp, pcm_l, pcm_r, offset, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_int_type, 1, norm );
+		return encode_buffer_template( gfp, pcm_l, pcm_r, offset, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_int_type, 1, norm );
 	}
 
 	/** Same as lame_encode_buffer_long(), but with correct scaling.
@@ -1635,13 +1599,13 @@ public class LAME {
 	 * type 'long'.   Data should be in the range:  +/- 2^(8*size(long)-1)
 	 *
 	 */
-	public static final int lame_encode_buffer_long2(final LAME_GlobalFlags gfp,
-		final long pcm_l[], final long pcm_r[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_long2(final GlobalFlags gfp,
+												final long pcm_l[], final long pcm_r[], final int nsamples,
+												final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- MAX_LONG for full scale */
 		final float norm = (1.0f / (1L << (Long.SIZE - 16)));
-		return lame_encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_long_type, 1, norm );
+		return encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_long_type, 1, norm );
 	}
 
 	/** as lame_encode_buffer, but for long's
@@ -1652,12 +1616,12 @@ public class LAME {
 	 * precision of type 'long'.  Use lame_encode_buffer_long2() instead.
 	 *
 	 */
-	public static final int lame_encode_buffer_long(final LAME_GlobalFlags gfp,
-		final long pcm_l[], final long pcm_r[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_long(final GlobalFlags gfp,
+											   final long pcm_l[], final long pcm_r[], final int nsamples,
+											   final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- 32768 for full scale */
-		return lame_encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_long_type, 1, 1.0f );
+		return encode_buffer_template( gfp, pcm_l, pcm_r, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_long_type, 1, 1.0f );
 	}
 
 	/**
@@ -1666,22 +1630,22 @@ public class LAME {
 	 * num_samples = number of samples in the L (or R)
 	 * channel, not the total number of samples in pcm[]
 	 */
-	public static final int lame_encode_buffer_interleaved(final LAME_GlobalFlags gfp,
-		final short pcm[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_interleaved(final GlobalFlags gfp,
+													  final short pcm[], final int nsamples,
+													  final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		/* input is assumed to be normalized to +/- MAX_SHORT for full scale */
-		return lame_encode_buffer_template( gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_short_type, 2, 1.0f );
+		return encode_buffer_template( gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_short_type, 2, 1.0f );
 	}
 
 
-	public static final int lame_encode_buffer_interleaved_int(final LAME_GlobalFlags gfp,
-		final int pcm[], final int nsamples,
-		final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	public static final int encode_buffer_interleaved_int(final GlobalFlags gfp,
+														  final int pcm[], final int nsamples,
+														  final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 	    /* input is assumed to be normalized to +/- MAX(int) for full scale */
 	    final float norm = (float)(1.0 / (1L << (Integer.SIZE - 16)));
-	    return lame_encode_buffer_template(gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_int_type, 2, norm);
+	    return encode_buffer_template(gfp, pcm, null, 0, nsamples, mp3buf, mp3buf_offset, mp3buf_size, pcm_int_type, 2, norm);
 	}
 
 
@@ -1694,11 +1658,11 @@ public class LAME {
 	 Because we set the reservoir=0, they will also decode seperately
 	 with no errors.
 	*********************************************************************/
-	public static final int lame_encode_flush_nogap(final LAME_GlobalFlags gfp, final byte[] mp3buffer, int mp3buffer_size) {
+	public static final int encode_flush_nogap(final GlobalFlags gfp, final byte[] mp3buffer, int mp3buffer_size) {
 		int rc = -3;
-		if( gfp.is_lame_global_flags_valid() ) {
-			final LAME_InternalFlags gfc = gfp.internal_flags;
-			if( gfc.is_lame_internal_flags_valid() ) {
+		if( gfp.is_valid() ) {
+			final InternalFlags gfc = gfp.internal_flags;
+			if( gfc.is_valid() ) {
 				Bitstream.flush_bitstream( gfc  );
 				/* if user specifed buffer size = 0, dont check size */
 				if( mp3buffer_size == 0 ) {
@@ -1712,9 +1676,9 @@ public class LAME {
 
 	/** called by lame_init_params.  You can also call this after flush_nogap
 	   if you want to write new id3v2 and Xing VBR tags into the bitstream */
-	public static final int lame_init_bitstream(final LAME_GlobalFlags gfp) {
-		if( gfp.is_lame_global_flags_valid() ) {
-			final LAME_InternalFlags gfc = gfp.internal_flags;
+	public static final int init_bitstream(final GlobalFlags gfp) {
+		if( gfp.is_valid() ) {
+			final InternalFlags gfc = gfp.internal_flags;
 			if( gfc != null ) {
 				gfc.ov_enc.frame_number = 0;
 
@@ -1752,12 +1716,12 @@ public class LAME {
 	/* flush internal PCM sample buffers, then mp3 buffers           */
 	/* then write id3 v1 tags into bitstream.                        */
 	/*****************************************************************/
-	public static final int lame_encode_flush(final LAME_GlobalFlags gfp, final byte[] mp3buffer, final int mp3buffer_size ) {
-		if( ! gfp.is_lame_global_flags_valid() ) {
+	public static final int encode_flush(final GlobalFlags gfp, final byte[] mp3buffer, final int mp3buffer_size ) {
+		if( ! gfp.is_valid() ) {
 			return -3;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
-		if( ! gfc.is_lame_internal_flags_valid() ) {
+		final InternalFlags gfc = gfp.internal_flags;
+		if( ! gfc.is_valid() ) {
 			return -3;
 		}
 		final SessionConfig cfg = gfc.cfg;
@@ -1807,7 +1771,7 @@ public class LAME {
 			/* send in a frame of 0 padding until all internal sample buffers
 			 * are flushed
 			 */
-			imp3 = lame_encode_buffer( gfp, buffer[0], buffer[1], bunch,
+			imp3 = encode_buffer( gfp, buffer[0], buffer[1], bunch,
 					mp3buffer, offset, mp3buffer_size_remaining );
 
 			offset += imp3;
@@ -1874,12 +1838,12 @@ public class LAME {
 	 *  frees internal buffers
 	 *
 	 ***********************************************************************/
-	public static final int lame_close(final LAME_GlobalFlags gfp) {
+	public static final int close(final GlobalFlags gfp) {
 		int ret = 0;
-		if( gfp != null && gfp.class_id == LAME_InternalFlags.LAME_ID ) {
-			final LAME_InternalFlags gfc = gfp.internal_flags;
+		if( gfp != null && gfp.class_id == InternalFlags.LAME_ID ) {
+			final InternalFlags gfc = gfp.internal_flags;
 			gfp.class_id = 0;
-			if( null == gfc || gfc.class_id != LAME_InternalFlags.LAME_ID ) {
+			if( null == gfc || gfc.class_id != InternalFlags.LAME_ID ) {
 				ret = -3;
 			}
 			if( null != gfc ) {
@@ -1906,7 +1870,7 @@ public class LAME {
 	 * will no longer work because the data will have been cleared, and
 	 * lame_mp3_tags_fid() cannot be called to add data to the VBR header
 	 */
-	/*private static final int lame_encode_finish(final LAME_GlobalFlags gfp, final byte[] mp3buffer, final int mp3buffer_size)
+	/*private static final int lame_encode_finish(final GlobalFlags gfp, final byte[] mp3buffer, final int mp3buffer_size)
 	{
 		final int ret = lame_encode_flush( gfp, mp3buffer, mp3buffer_size );
 
@@ -1935,12 +1899,12 @@ public class LAME {
 	 * You can call lame_get_lametag_frame instead, if you want to insert
 	 * the lametag yourself.
 	*/
-	public static final void lame_mp3_tags_fid(final LAME_GlobalFlags gfp, final RandomAccessFile fpStream ) {
-		if( ! gfp.is_lame_global_flags_valid() ) {
+	public static final void mp3_tags_fid(final GlobalFlags gfp, final RandomAccessFile fpStream ) {
+		if( ! gfp.is_valid() ) {
 			return;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
-		if( ! gfc.is_lame_internal_flags_valid() ) {
+		final InternalFlags gfc = gfp.internal_flags;
+		if( ! gfc.is_valid() ) {
 			return;
 		}
 		final SessionConfig cfg = gfc.cfg;
@@ -1971,7 +1935,7 @@ public class LAME {
 		}
 	}
 
-	private static final int lame_init_internal_flags(final LAME_InternalFlags gfc)
+	private static final int init_internal_flags(final InternalFlags gfc)
 	{
 		if( null == gfc ) {
 			return -1;
@@ -2009,10 +1973,10 @@ public class LAME {
 	}
 
 	/** initialize mp3 encoder */
-	private static final int lame_init_old(final LAME_GlobalFlags gfp) {
+	private static final int init_old(final GlobalFlags gfp) {
 		// gfp.clear();// java: don't do it, because init is being called only after creating of the gfp
 
-		gfp.class_id = LAME_InternalFlags.LAME_ID;
+		gfp.class_id = InternalFlags.LAME_ID;
 
 		/* Global flags.  set defaults here for non-zero values */
 		/* see lame.h for description */
@@ -2030,7 +1994,7 @@ public class LAME {
 
 		gfp.write_lame_tag = true;
 		gfp.quality = -1;
-		gfp.short_blocks = LAME_GlobalFlags.short_block_not_set;
+		gfp.short_blocks = GlobalFlags.short_block_not_set;
 		gfp.subblock_gain = -1;
 
 		gfp.lowpassfreq = 0;
@@ -2067,21 +2031,21 @@ public class LAME {
 
 		gfp.write_id3tag_automatic = true;
 
-		gfp.internal_flags = new LAME_InternalFlags();
+		gfp.internal_flags = new InternalFlags();
 
-		if( lame_init_internal_flags( gfp.internal_flags ) < 0 ) {
+		if( init_internal_flags( gfp.internal_flags ) < 0 ) {
 			gfp.internal_flags = null;
 			return -1;
 		}
 		return 0;
 	}
 
-	public static final LAME_GlobalFlags lame_init() {
+	public static final GlobalFlags init() {
 		Util.init_log_table();
 
-		final LAME_GlobalFlags gfp = new LAME_GlobalFlags();
+		final GlobalFlags gfp = new GlobalFlags();
 
-		if( lame_init_old( gfp ) != 0 ) {
+		if( init_old( gfp ) != 0 ) {
 			return null;
 		}
 

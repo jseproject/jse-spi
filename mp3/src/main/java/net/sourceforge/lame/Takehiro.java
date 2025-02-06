@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 // takehiro.c
@@ -607,7 +571,7 @@ class Takehiro {
 	/*************************************************************************/
 	/*	      count_bit							 */
 	/*************************************************************************/
-	static final int noquant_count_bits(final LAME_InternalFlags gfc,
+	static final int noquant_count_bits(final InternalFlags gfc,
 										final III_GrInfo gi, final CalcNoiseData prev_noise)
 	{
 		final SessionConfig cfg = gfc.cfg;
@@ -725,7 +689,7 @@ class Takehiro {
 		return bits;
 	}
 
-	static final int count_bits(final LAME_InternalFlags gfc,
+	static final int count_bits(final InternalFlags gfc,
 								final float[] xr, final III_GrInfo gi, final CalcNoiseData prev_noise)
 	{
 		final int[] ix = gi.l3_enc;
@@ -766,7 +730,7 @@ class Takehiro {
 	  re-calculate the best scalefac_compress using scfsi
 	  the saved bits are kept in the bit reservoir.
 	 **********************************************************************/
-	private static final void recalc_divide_init(final LAME_InternalFlags gfc,
+	private static final void recalc_divide_init(final InternalFlags gfc,
 												 final III_GrInfo cod_info, final int[] ix, final int r01_bits[], final int r01_div[], final int r0_tbl[], final int r1_tbl[])
 	{
 		final int bigv = cod_info.big_values;
@@ -805,7 +769,7 @@ class Takehiro {
 		}
 	}
 
-	private static final void recalc_divide_sub(final LAME_InternalFlags gfc,
+	private static final void recalc_divide_sub(final InternalFlags gfc,
 		final III_GrInfo cod_info2,
 		final III_GrInfo gi,
 		final int[] ix,
@@ -843,7 +807,7 @@ class Takehiro {
 		}
 	}
 
-	static final void best_huffman_divide(final LAME_InternalFlags gfc, final III_GrInfo gi) {
+	static final void best_huffman_divide(final InternalFlags gfc, final III_GrInfo gi) {
 		final SessionConfig cfg = gfc.cfg;
 		final int[] ix = gi.l3_enc;
 
@@ -985,7 +949,7 @@ class Takehiro {
 	Only call this routine after final scalefactors have been
 	chosen and the channel/granule will not be re-encoded.
 	 */
-	static final void best_scalefac_store(final LAME_InternalFlags gfc,
+	static final void best_scalefac_store(final InternalFlags gfc,
 		final int gr, final int ch, final III_SideInfo l3_side)
 	{
 		final SessionConfig cfg = gfc.cfg;
@@ -1109,7 +1073,7 @@ class Takehiro {
 
 	/* Also calculates the number of bits necessary to code the scalefactors. */
 
-	private static final boolean mpeg1_scale_bitcount(final LAME_InternalFlags gfc, final III_GrInfo cod_info) {
+	private static final boolean mpeg1_scale_bitcount(final InternalFlags gfc, final III_GrInfo cod_info) {
 		int  max_slen1 = 0, max_slen2 = 0;
 
 		/* maximum values */
@@ -1193,7 +1157,7 @@ class Takehiro {
 
 	/*  This is reverse-engineered from section 2.4.3.2 of the MPEG2 IS,     */
 	/* "Audio Decoding Layer III"                                            */
-	private static final boolean mpeg2_scale_bitcount(final LAME_InternalFlags gfc, final III_GrInfo cod_info) {
+	private static final boolean mpeg2_scale_bitcount(final InternalFlags gfc, final III_GrInfo cod_info) {
 		final int max_sfac[] = new int[4];
 		int[] partition_table;
 		final int[] scalefac = cod_info.scalefac;
@@ -1296,7 +1260,7 @@ class Takehiro {
 		return over != 0;
 	}
 
-	static final boolean scale_bitcount(final LAME_InternalFlags gfc, final III_GrInfo cod_info) {
+	static final boolean scale_bitcount(final InternalFlags gfc, final III_GrInfo cod_info) {
 		if( gfc.cfg.mode_gr == 2 ) {
 			return mpeg1_scale_bitcount( gfc, cod_info );
 		}// else {
@@ -1304,7 +1268,7 @@ class Takehiro {
 		//}
 	}
 
-	static final void huffman_init(final LAME_InternalFlags gfc) {
+	static final void huffman_init(final InternalFlags gfc) {
 		// gfc.choose_table = choose_table_nonMMX;
 		final int[] band_l = gfc.scalefac_band.l;// java
 		final byte[] bv_scf = gfc.sv_qnt.bv_scf;// java

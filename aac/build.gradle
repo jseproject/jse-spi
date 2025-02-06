@@ -1,14 +1,11 @@
-version = '1.0.2'
-
-dependencies {
-}
+version = '1.1.0'
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = group
             artifactId = rootProject.name + '-' + project.name
-            version = version
+            version = project.version
             from components.java
             pom {
                 name = 'JavaSound Enhancement Project AAC SPI'

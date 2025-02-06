@@ -1,6 +1,6 @@
-# JavaSound Enhancement Project - Service Provider Interface
+# JavaSound Enhancement Project SPI
 
-JSE-SPI provides extended audio file format support for the Java Platform, through plugins for the `javax.sound.*` package.
+JSE SPI provides extended audio file format support for the Java Platform, through plugins for the `javax.sound.*` package.
 
 The main goal of this project is to provide support for formats not covered by the JRE itself. 
 Support for these formats is important, to be able to read data found "in the wild", as well as to maintain access to data in legacy formats.
@@ -8,6 +8,9 @@ As there is lots of modern data out there, we see the need for open implementati
 
 Note that it's *NOT* recommended to use codecs bundled in this library on non-standard JREs such as Android Runtime. 
 Use solutions more suitable for these platforms!
+
+## Compatibility
+JDK 8+
 
 ## API
 - [JavaSound API](https://www.oracle.com/java/technologies/java-sound-api.html)
@@ -142,7 +145,7 @@ public class PlaybackExample {
 <td>YES</td>
 <td>1-2</td>
 <td rowspan="3">8, 11.025, 12, 16, 22.05, 24, 32, 44.1, 48</td>
-<td>u8, s16, u24</td>
+<td>s16</td>
 <td><ul><li>MP3 (.mp3)</li></ul></td>
 </tr>
 <tr>
@@ -150,7 +153,7 @@ public class PlaybackExample {
 <td></td>
 <td>YES</td>
 <td>1-2</td>
-<td>u8, s16, u24</td>
+<td>s16</td>
 <td><ul><li>MP2 (.mp2)</li></ul></td>
 </tr>
 <tr>
@@ -158,7 +161,7 @@ public class PlaybackExample {
 <td></td>
 <td>YES</td>
 <td>1-2</td>
-<td>u8, s16, u24</td>
+<td>s16</td>
 <td><ul><li>MP1 (.mp1)</li></ul></td>
 </tr>
 <tr>
@@ -185,6 +188,26 @@ public class PlaybackExample {
 <td>1-8</td>
 <td>s16</td>
 </tr>
+<tr>
+<td>jse-spi-ape</td>
+<td>Monkey's Audio</td>
+<td>YES</td>
+<td>YES</td>
+<td>1-2</td>
+<td>PCM</td>
+<td>u8, s16, u24</td>
+<td><ul><li>Monkey's Audio (.ape, .mac)</li></ul></td>
+</tr>
+<tr>
+<td>jse-spi-wavpack</td>
+<td>WavPack</td>
+<td>YES</td>
+<td>YES</td>
+<td>1-2</td>
+<td>6, 8, 9.6, 11.025, 12, 16, 22.05, 24, 32, 44.1, 48, 64, 88.2, 96, 192</td>
+<td>u8, s16, u24, s32</td>
+<td><ul><li>WavPack (.wv)</li></ul></td>
+</tr>
 </table>
 
 ## Installing
@@ -194,32 +217,42 @@ public class PlaybackExample {
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-flac</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-opus</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-vorbis</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-speex</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-mp3</artifactId>
-        <version>1.0.2</version>
+        <version>1.1.0</version>
     </dependency>
     <dependency>
         <groupId>io.github.jseproject</groupId>
         <artifactId>jse-spi-aac</artifactId>
-        <version>1.0.2</version>
+        <version>1.1.0</version>
+    </dependency>
+    <dependency>
+        <groupId>io.github.jseproject</groupId>
+        <artifactId>jse-spi-ape</artifactId>
+        <version>1.1.0</version>
+    </dependency>
+    <dependency>
+        <groupId>io.github.jseproject</groupId>
+        <artifactId>jse-spi-wavpack</artifactId>
+        <version>1.1.0</version>
     </dependency>
 </dependencies>
 ```
@@ -230,24 +263,28 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.jseproject:jse-spi-flac:1.0.1'
-    implementation 'io.github.jseproject:jse-spi-opus:1.0.1'
-    implementation 'io.github.jseproject:jse-spi-vorbis:1.0.1'
-    implementation 'io.github.jseproject:jse-spi-speex:1.0.1'
-    implementation 'io.github.jseproject:jse-spi-mp3:1.0.2'
-    implementation 'io.github.jseproject:jse-spi-aac:1.0.2'
+    implementation 'io.github.jseproject:jse-spi-flac:1.1.0'
+    implementation 'io.github.jseproject:jse-spi-opus:1.1.0'
+    implementation 'io.github.jseproject:jse-spi-vorbis:1.1.0'
+    implementation 'io.github.jseproject:jse-spi-speex:1.1.0'
+    implementation 'io.github.jseproject:jse-spi-mp3:1.1.0'
+    implementation 'io.github.jseproject:jse-spi-aac:1.1.0'
+    implementation 'io.github.jseproject:jse-spi-ape:1.1.0'
+    implementation 'io.github.jseproject:jse-spi-wavpack:1.1.0'
 }
 ```
 
 ## License
-| Module         | License                             |
-|----------------|-------------------------------------|
-| jse-spi-flac   | Xiph.Org Variant of the BSD License |
-| jse-spi-opus   | Xiph.Org Variant of the BSD License |
-| jse-spi-vorbis | Xiph.Org Variant of the BSD License |
-| jse-spi-speex  | Xiph.Org Variant of the BSD License |
-| jse-spi-mp3    | LGPL-2.1                            |
-| jse-spi-aac    | BSD 2-Clause                        |
+| Module          | License                             |
+|-----------------|-------------------------------------|
+| jse-spi-flac    | Xiph.Org Variant of the BSD License |
+| jse-spi-opus    | Xiph.Org Variant of the BSD License |
+| jse-spi-vorbis  | Xiph.Org Variant of the BSD License |
+| jse-spi-speex   | Xiph.Org Variant of the BSD License |
+| jse-spi-mp3     | LGPL-2.1                            |
+| jse-spi-aac     | BSD 2-Clause                        |
+| jse-spi-ape     | LGPL-2.0                            |
+| jse-spi-wavpack | BSD 3-Clause                        |
 
 ### Dependencies
 <table>
@@ -259,15 +296,15 @@ dependencies {
 <th>Runtime</th>
 </tr>
 <tr>
-<td>ALL</td>
-<td><a href="https://github.com/jseproject/jse-api">JavaSound Enhancement Project API</a></td>
+<td>All Modules</td>
+<td><a href="https://github.com/jseproject/jse-api">JSE API</a></td>
 <td>BSD 3-Clause</td>
 <td>YES</td>
 <td>YES</td>
 </tr>
 <tr>
-<td>ALL</td>
-<td><a href="http://www.tritonus.org">Tritonus</a> Share</td>
+<td>All Modules</td>
+<td><a href="https://www.tritonus.org">Tritonus</a> Share</td>
 <td>LGPL-2.1</td>
 <td>YES</td>
 <td>YES</td>

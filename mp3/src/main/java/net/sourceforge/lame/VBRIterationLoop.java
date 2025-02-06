@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 class VBRIterationLoop extends Quantize/* implements IterationLoop */ {
@@ -59,7 +23,7 @@ class VBRIterationLoop extends Quantize/* implements IterationLoop */ {
 	 *********************************************************************/
 
 /* RH: this one needs to be overhauled sometime */
-	private static final boolean VBR_old_prepare(final LAME_InternalFlags gfc,
+	private static final boolean VBR_old_prepare(final InternalFlags gfc,
 		final float pe[][]/*[2][2]*/, final float ms_ener_ratio[/*2*/],
 		final III_PsyRatio ratio[][]/*[2][2]*/,
 		final float l3_xmin[][][]/*[2][2][SFBMAX]*/,
@@ -136,7 +100,7 @@ class VBRIterationLoop extends Quantize/* implements IterationLoop */ {
 		return analog_silence;
 	}
 
-	private static final void bitpressure_strategy(final LAME_InternalFlags gfc,
+	private static final void bitpressure_strategy(final InternalFlags gfc,
 			final float l3_xmin[][][]/*[2][2][SFBMAX]*/, final int min_bits[][]/*[2][2]*/, final int max_bits[][]/*[2][2]*/)
 	{
 		final SessionConfig cfg = gfc.cfg;
@@ -179,7 +143,7 @@ class VBRIterationLoop extends Quantize/* implements IterationLoop */ {
 	 *  2000-09-04 Robert Hegemann
 	 *
 	 *********************************************************************/
-	private static final void VBR_encode_granule(final LAME_InternalFlags gfc, final III_GrInfo cod_info, final float[] l3_xmin, /* allowed distortion of the scalefactor */
+	private static final void VBR_encode_granule(final InternalFlags gfc, final III_GrInfo cod_info, final float[] l3_xmin, /* allowed distortion of the scalefactor */
                    final float xrpow[/*576*/], /* coloured magnitudes of spectral values */
                    final int ch, int min_bits, int max_bits)
 	{
@@ -265,11 +229,11 @@ class VBRIterationLoop extends Quantize/* implements IterationLoop */ {
 	 *
 	 ************************************************************************/
 
-	//private static final void VBR_old_iteration_loop(final LAME_InternalFlags gfc, final float pe[][]/*[2][2]*/,
+	//private static final void VBR_old_iteration_loop(final InternalFlags gfc, final float pe[][]/*[2][2]*/,
 	//		final float ms_ener_ratio[]/*[2]*/, final III_PsyRatio ratio[][]/*[2][2]*/)
 	//@Override
-	static final void iteration(final LAME_InternalFlags gfc, final float pe[][]/*[2][2]*/,
-								final float ms_ener_ratio[]/*[2]*/, final III_PsyRatio ratio[][]/*[2][2]*/)
+	static final void iteration(final InternalFlags gfc, final float pe[][]/*[2][2]*/,
+                                final float ms_ener_ratio[]/*[2]*/, final III_PsyRatio ratio[][]/*[2][2]*/)
 	{
 		final SessionConfig cfg = gfc.cfg;
 		final EncResult eov = gfc.ov_enc;

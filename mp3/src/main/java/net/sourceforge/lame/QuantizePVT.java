@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 // quantize_pvt.c
@@ -239,7 +203,7 @@ class QuantizePVT {
 		return ath;
 	}
 
-	private static final void compute_ath(final LAME_InternalFlags gfc) {
+	private static final void compute_ath(final InternalFlags gfc) {
 		final SessionConfig cfg = gfc.cfg;
 		final float[] ATH_l = gfc.ATH.l;
 		final float[] ATH_psfb21 = gfc.ATH.psfb21;
@@ -341,7 +305,7 @@ class QuantizePVT {
 	/************************************************************************/
 	/*  initialization for iteration_loop */
 	/************************************************************************/
-	static final void iteration_init(final LAME_InternalFlags gfc) {
+	static final void iteration_init(final InternalFlags gfc) {
 		final SessionConfig cfg = gfc.cfg;
 		final III_SideInfo l3_side = gfc.l3_side;
 
@@ -431,7 +395,7 @@ class QuantizePVT {
 	 * mt 6/99
 	 * bugfixes rh 8/01: often allocated more than the allowed 4095 bits
 	 ************************************************************************/
-	static final int on_pe(final LAME_InternalFlags gfc, final float pe[][/*2*/], final int targ_bits[/*2*/], final int mean_bits, final int gr, final boolean cbr)
+	static final int on_pe(final InternalFlags gfc, final float pe[][/*2*/], final int targ_bits[/*2*/], final int mean_bits, final int gr, final boolean cbr)
 	{
 		final SessionConfig cfg = gfc.cfg;
 		int extra_bits = 0;
@@ -581,7 +545,7 @@ class QuantizePVT {
 
 	  returns number of sfb's with energy > ATH
 	*/
-	static final int calc_xmin(final LAME_InternalFlags gfc,
+	static final int calc_xmin(final InternalFlags gfc,
 							   final III_PsyRatio ratio, final III_GrInfo cod_info, final float[] pxmin)
 	{
 		int ipxmin = 0;// to pxmin

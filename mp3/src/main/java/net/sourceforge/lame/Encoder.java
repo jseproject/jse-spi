@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 // encoder.h
@@ -161,7 +125,7 @@ class Encoder {
 	 *   gfp.internal_flags.ATH
 	 *   (gfc.ATH)
 	 */
-	private static final void adjust_ATH(final LAME_InternalFlags gfc) {
+	private static final void adjust_ATH(final InternalFlags gfc) {
 		final ATH ath = gfc.ATH;// java
 		if( ath.use_adjust == 0 ) {
 			ath.adjust_factor = 1.0f; /* no adjustment */
@@ -251,7 +215,7 @@ class Encoder {
 	 *  3:  MS-i
 	 *
 	 ***********************************************************************/
-	private static final void updateStats(final LAME_InternalFlags gfc ) {
+	private static final void updateStats(final InternalFlags gfc ) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncResult eov = gfc.ov_enc;
 		final int bitrate_index = eov.bitrate_index;// java
@@ -283,7 +247,7 @@ class Encoder {
 		}
 	}
 
-	private static final void lame_encode_frame_init(final LAME_InternalFlags gfc, final float inbuf[/* 2 */][] ) {
+	private static final void encode_frame_init(final InternalFlags gfc, final float inbuf[/* 2 */][] ) {
 		final SessionConfig cfg = gfc.cfg;
 
 		if( ! gfc.lame_encode_frame_init ) {
@@ -395,7 +359,7 @@ class Encoder {
 	 * @param mp3buf_size
 	 * @return
 	 */
-	static final int lame_encode_mp3_frame(final LAME_InternalFlags gfc, final float[] inbuf_l, final float[] inbuf_r, final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
+	static final int encode_mp3_frame(final InternalFlags gfc, final float[] inbuf_l, final float[] inbuf_r, final byte[] mp3buf, final int mp3buf_offset, final int mp3buf_size)
 	{
 		final SessionConfig cfg = gfc.cfg;
 		final III_PsyRatio masking_LR[][] = new III_PsyRatio[2][2]; /*LR masking & energy */
@@ -422,7 +386,7 @@ class Encoder {
 
 		if( ! gfc.lame_encode_frame_init ) {
 			/*first run? */
-			lame_encode_frame_init( gfc, inbuf );
+			encode_frame_init( gfc, inbuf );
 		}
 		/********************** padding *****************************/
 		/* padding method as described in

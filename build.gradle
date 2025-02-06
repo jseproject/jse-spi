@@ -20,8 +20,8 @@ subprojects {
 
         implementation 'com.googlecode.soundlibs:tritonus-share:0.3.7.4'
         api 'com.googlecode.soundlibs:tritonus-share:0.3.7.4'
-        implementation 'io.github.jseproject:jse-api:1.0.0'
-        api 'io.github.jseproject:jse-api:1.0.0'
+        implementation 'io.github.jseproject:jse-api:1.1.0'
+        api 'io.github.jseproject:jse-api:1.1.0'
     }
 
     test {

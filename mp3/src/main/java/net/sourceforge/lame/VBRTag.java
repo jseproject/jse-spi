@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 import java.io.IOException;
@@ -175,7 +139,7 @@ public class VBRTag {
 	 *      nStreamPos: how many bytes did we write to the bitstream so far
 	 *                              (in Bytes NOT Bits)
 	 ****************************************************************************/
-	static final void AddVbrFrame(final LAME_InternalFlags gfc) {
+	static final void AddVbrFrame(final InternalFlags gfc) {
 		final int     kbps = Tables.bitrate_table[gfc.cfg.version][gfc.ov_enc.bitrate_index];
 		addVbr( gfc.VBR_seek_table, kbps );
 	}
@@ -222,7 +186,7 @@ public class VBRTag {
 		x[off] = (byte)((((int)x[off] & 0xff) << n) | ( v & ~(-1 << n) ));
 	}
 
-	private static final void setLameTagFrameHeader(final LAME_InternalFlags gfc, final byte[] buffer) {
+	private static final void setLameTagFrameHeader(final InternalFlags gfc, final byte[] buffer) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncResult eov = gfc.ov_enc;
 
@@ -449,8 +413,8 @@ public class VBRTag {
 	 *                              fpStream: pointer to output file stream
 	 *                              nMode   : Channel Mode: 0=STEREO 1=JS 2=DS 3=MONO
 	 *****************************************************************************/
-	static final int InitVbrTag(final LAME_GlobalFlags gfp) {
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+	static final int InitVbrTag(final GlobalFlags gfp) {
+		final InternalFlags gfc = gfp.internal_flags;
 		final SessionConfig cfg = gfc.cfg;
 
 		/*
@@ -553,9 +517,9 @@ public class VBRTag {
  * @return java: new offset value.
  * use offset = PutLameVBR(.., offset, ..);
  *****************************************************************************/
-	private static final int PutLameVBR(final LAME_GlobalFlags gfp, final int nMusicLength, final byte[] pbtStreamBuffer, int nBytesWritten/*offset*/, char crc)
+	private static final int PutLameVBR(final GlobalFlags gfp, final int nMusicLength, final byte[] pbtStreamBuffer, int nBytesWritten/*offset*/, char crc)
 	{
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		final SessionConfig cfg = gfc.cfg;
 
 		// int nBytesWritten = 0;// java: offset
@@ -578,7 +542,7 @@ public class VBRTag {
 				be forced to write a fake LAME version string!
 				As a result, the encoder version info becomes worthless.
 		*/
-		final String szVersion = LAME_Version.get_lame_tag_encoder_short_version();
+		final String szVersion = Version.get_lame_tag_encoder_short_version();
 		final int nRevision = 0x00;
 		final byte vbr_type_translator[] = { 1, 5, 3, 2, 4, 0, 3 }; /*numbering different in vbr_mode vs. Lame tag */
 
@@ -696,7 +660,7 @@ public class VBRTag {
 
 		/*Check if the user overrided the default LAME behaviour with some nasty options */
 
-		if( cfg.short_blocks == LAME_GlobalFlags.short_block_forced || cfg.short_blocks == LAME_GlobalFlags.short_block_dispensed || ((cfg.lowpassfreq == -1) && (cfg.highpassfreq == -1)) || /* "-k" */
+		if( cfg.short_blocks == GlobalFlags.short_block_forced || cfg.short_blocks == GlobalFlags.short_block_dispensed || ((cfg.lowpassfreq == -1) && (cfg.highpassfreq == -1)) || /* "-k" */
 				(cfg.disable_reservoir && cfg.avg_bitrate < 320) ||
 				cfg.noATH || cfg.ATHonly || (nAthType == 0) || cfg.samplerate <= 32000 ) {
 			bNonOptimal = 1;
@@ -810,15 +774,15 @@ public class VBRTag {
 		return 0;
 	}
 
-	public static final int lame_get_lametag_frame(final LAME_GlobalFlags gfp, final byte[] buffer, final int size) {
+	public static final int lame_get_lametag_frame(final GlobalFlags gfp, final byte[] buffer, final int size) {
 		if( gfp == null ) {
 			return 0;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		if( gfc == null ) {
 			return 0;
 		}
-		if( ! gfc.is_lame_internal_flags_valid() ) {
+		if( ! gfc.is_valid() ) {
 			return 0;
 		}
 		final SessionConfig cfg = gfc.cfg;
@@ -929,8 +893,8 @@ public class VBRTag {
 	 *                              lpszFileName: filename of MP3 bit stream
 	 *                              nVbrScale       : encoder quality indicator (0..100)
 	 *****************************************************************************/
-	static final int PutVbrTag(final LAME_GlobalFlags gfp, final RandomAccessFile fpStream) {
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+	static final int PutVbrTag(final GlobalFlags gfp, final RandomAccessFile fpStream) {
+		final InternalFlags gfc = gfp.internal_flags;
 
 		final byte buffer[] = new byte[MAXFRAMESIZE];
 

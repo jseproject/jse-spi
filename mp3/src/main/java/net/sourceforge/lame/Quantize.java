@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 import java.util.Arrays;
@@ -48,11 +12,11 @@ class Quantize {
 			 : (Math.abs((a)-(b)) <= (Math.abs(b) * 1e-6f));
 	};
 
-	static final void init_xrpow_core_init(final LAME_InternalFlags gfc) {
+	static final void init_xrpow_core_init(final InternalFlags gfc) {
 		// gfc.init_xrpow_core = init_xrpow_core_c;
 	}
 
-	static final boolean init_xrpow(final LAME_InternalFlags gfc, final III_GrInfo cod_info, final float xrpow[/*576*/]) {
+	static final boolean init_xrpow(final InternalFlags gfc, final III_GrInfo cod_info, final float xrpow[/*576*/]) {
 		final int upper = cod_info.max_nonzero_coeff;
 
 		cod_info.xrpow_max = 0;
@@ -92,7 +56,7 @@ class Quantize {
 	coeffs which are below ath. It stops on the first
 	coeff higher than ath.
 	*/
-	private static final void psfb21_analogsilence(final LAME_InternalFlags gfc, final III_GrInfo cod_info) {
+	private static final void psfb21_analogsilence(final InternalFlags gfc, final III_GrInfo cod_info) {
 		final ATH ATH = gfc.ATH;
 		final float[] xr = cod_info.xr;
 
@@ -153,7 +117,7 @@ class Quantize {
 		//}
 	}
 
-	static final void init_outer_loop(final LAME_InternalFlags gfc, final III_GrInfo cod_info) {
+	static final void init_outer_loop(final InternalFlags gfc, final III_GrInfo cod_info) {
 		final SessionConfig cfg = gfc.cfg;
 		/*  initialize fresh cod_info */
 		cod_info.part2_3_length = 0;
@@ -290,7 +254,7 @@ class Quantize {
 	private static final int BINSEARCH_DOWN = 2;
 	//} binsearchDirection_t;
 
-	private static final int bin_search_StepSize(final LAME_InternalFlags gfc, final III_GrInfo cod_info, int desired_rate, final int ch, final float xrpow[/*576*/])
+	private static final int bin_search_StepSize(final InternalFlags gfc, final III_GrInfo cod_info, int desired_rate, final int ch, final float xrpow[/*576*/])
 	{
 		int CurrentStep = gfc.sv_qnt.CurrentStep[ch];
 		boolean flag_GoneOver = false;
@@ -370,7 +334,7 @@ class Quantize {
 		return 0;
 	} */
 
-	static final void trancate_smallspectrums(final LAME_InternalFlags gfc, final III_GrInfo gi, final float[] l3_xmin, final float[] work) {
+	static final void trancate_smallspectrums(final InternalFlags gfc, final III_GrInfo gi, final float[] l3_xmin, final float[] work) {
 		final float distort[] = new float[Encoder.SFBMAX];
 		final CalcNoiseResult dummy = new CalcNoiseResult();
 
@@ -611,7 +575,7 @@ class Quantize {
  *
  *
  *************************************************************************/
-	private static final void amp_scalefac_bands(final LAME_InternalFlags gfc,
+	private static final void amp_scalefac_bands(final InternalFlags gfc,
 												 final III_GrInfo cod_info, final float[] distort, final float xrpow[/*576*/], final boolean bRefine)
 	{
 		final SessionConfig cfg = gfc.cfg;
@@ -704,7 +668,7 @@ class Quantize {
  *  increases the subblock gain and adjusts scalefactors
  *
  *************************************************************************/
-	private static final boolean inc_subblock_gain(final LAME_InternalFlags gfc, final III_GrInfo cod_info, final float xrpow[/*576*/]) {
+	private static final boolean inc_subblock_gain(final InternalFlags gfc, final III_GrInfo cod_info, final float xrpow[/*576*/]) {
 		final int[] scalefac = cod_info.scalefac;
 
 		final int sfb_lmax = cod_info.sfb_lmax;// java
@@ -804,7 +768,7 @@ class Quantize {
  *          try on short blocks to increase subblock gain
  *
  ********************************************************************/
-	private static final boolean balance_noise(final LAME_InternalFlags gfc,
+	private static final boolean balance_noise(final InternalFlags gfc,
 											   final III_GrInfo cod_info, final float[] distort, final float xrpow[/*576*/], final boolean bRefine)
 	{
 		final SessionConfig cfg = gfc.cfg;
@@ -876,7 +840,7 @@ class Quantize {
  *  some code shuffle rh 9/00
  ************************************************************************/
 
-	static final int outer_loop(final LAME_InternalFlags gfc, final III_GrInfo cod_info, final float[] l3_xmin, /* allowed distortion */
+	static final int outer_loop(final InternalFlags gfc, final III_GrInfo cod_info, final float[] l3_xmin, /* allowed distortion */
            final float xrpow[/*576*/], /* coloured magnitudes of spectral */
            final int ch, final int targ_bits)
 	{                       /* maximum allowed bits */
@@ -1058,7 +1022,7 @@ class Quantize {
  *
  ************************************************************************/
 
-	static final void iteration_finish_one(final LAME_InternalFlags gfc, final int gr, final int ch) {
+	static final void iteration_finish_one(final InternalFlags gfc, final int gr, final int ch) {
 		final SessionConfig cfg = gfc.cfg;
 		final III_SideInfo l3_side = gfc.l3_side;
 		final III_GrInfo cod_info = l3_side.tt[gr][ch];
@@ -1088,7 +1052,7 @@ class Quantize {
 	 *  * how many bits each bitrate would provide
 	 *
 	 ************************************************************************/
-	static final void get_framebits(final LAME_InternalFlags gfc, final int frameBits[/*15*/]) {
+	static final void get_framebits(final InternalFlags gfc, final int frameBits[/*15*/]) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncResult eov = gfc.ov_enc;
 		// int     bitsPerFrame;// FIXME result never uses

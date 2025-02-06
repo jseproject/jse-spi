@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 import java.nio.charset.Charset;
@@ -172,17 +136,17 @@ public class ID3Tag {
 		return frame_id_matches( id, mask ) == 0;
 	}
 
-	private static final boolean test_tag_spec_flags(final LAME_InternalFlags gfc, final int tst) {
+	private static final boolean test_tag_spec_flags(final InternalFlags gfc, final int tst) {
 		return (gfc.tag_spec.flags & tst) != 0;
 	}
 
-	private static final boolean is_lame_internal_flags_null(final LAME_GlobalFlags gfp)
+	private static final boolean is_internal_flags_null(final GlobalFlags gfp)
 	{
 		return (gfp == null || gfp.internal_flags == null);
 	}
 
-	private static final void copyV1ToV2(final LAME_GlobalFlags gfp, final int frame_id, final String s) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	private static final void copyV1ToV2(final GlobalFlags gfp, final int frame_id, final String s) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null ) {
 			final int flags = gfc.tag_spec.flags;
 			id3v2_add_lng( gfp, frame_id, null, s, false );
@@ -190,10 +154,10 @@ public class ID3Tag {
 		}
 	}
 
-	private static final void id3v2AddLameVersion(final LAME_GlobalFlags gfp) {
-		final String b = LAME_Version.get_lame_os_bitness();
-		final String v = LAME_Version.get_lame_version();
-		final String u = LAME_Version.get_lame_url();
+	private static final void id3v2AddLameVersion(final GlobalFlags gfp) {
+		final String b = Version.get_lame_os_bitness();
+		final String v = Version.get_lame_version();
+		final String u = Version.get_lame_url();
 
 		String buffer;
 		if( b.length() > 0 ) {
@@ -204,7 +168,7 @@ public class ID3Tag {
 		copyV1ToV2( gfp, ID_ENCODER, buffer );
 	}
 
-	private static final void id3v2AddAudioDuration(final LAME_GlobalFlags gfp, double ms) {
+	private static final void id3v2AddAudioDuration(final GlobalFlags gfp, double ms) {
 		final SessionConfig cfg = gfp.internal_flags.cfg; /* caller checked pointers */
 			final double max_ulong = (double) Util.MAX_U_32_NUM;
 			long playlength_ms;
@@ -234,11 +198,11 @@ public class ID3Tag {
 
 	private static final int GENRE_NUM_UNKNOWN = 255;
 
-	public static final void id3tag_init(final LAME_GlobalFlags gfp) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final void id3tag_init(final GlobalFlags gfp) {
+		if( is_internal_flags_null( gfp ) ) {
 			return;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		gfc.free_id3tag();
 		gfc.tag_spec.clear();
 		gfc.tag_spec.genre_id3v1 = GENRE_NUM_UNKNOWN;
@@ -246,51 +210,51 @@ public class ID3Tag {
 		id3v2AddLameVersion( gfp );
 	}
 
-	public static final void id3tag_add_v2(final LAME_GlobalFlags gfp) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final void id3tag_add_v2(final GlobalFlags gfp) {
+		if( is_internal_flags_null( gfp ) ) {
 			return;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		gfc.tag_spec.flags &= ~V1_ONLY_FLAG;
 		gfc.tag_spec.flags |= ADD_V2_FLAG;
 	}
 
-	public static final void id3tag_v1_only(final LAME_GlobalFlags gfp) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final void id3tag_v1_only(final GlobalFlags gfp) {
+		if( is_internal_flags_null( gfp ) ) {
 			return;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		gfc.tag_spec.flags &= ~(ADD_V2_FLAG | V2_ONLY_FLAG);
 		gfc.tag_spec.flags |= V1_ONLY_FLAG;
 	}
 
-	public static final void id3tag_v2_only(final LAME_GlobalFlags gfp) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final void id3tag_v2_only(final GlobalFlags gfp) {
+		if( is_internal_flags_null( gfp ) ) {
 			return;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		gfc.tag_spec.flags &= ~V1_ONLY_FLAG;
 		gfc.tag_spec.flags |= V2_ONLY_FLAG;
 	}
 
-	public static final void id3tag_space_v1(final LAME_GlobalFlags gfp) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final void id3tag_space_v1(final GlobalFlags gfp) {
+		if( is_internal_flags_null( gfp ) ) {
 			return;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		gfc.tag_spec.flags &= ~V2_ONLY_FLAG;
 		gfc.tag_spec.flags |= SPACE_V1_FLAG;
 	}
 
-	public static final void id3tag_pad_v2(final LAME_GlobalFlags gfp) {
+	public static final void id3tag_pad_v2(final GlobalFlags gfp) {
 		id3tag_set_pad( gfp, 128 );
 	}
 
-	public static final void id3tag_set_pad(final LAME_GlobalFlags gfp, final int n) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final void id3tag_set_pad(final GlobalFlags gfp, final int n) {
+		if( is_internal_flags_null( gfp ) ) {
 			return;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		gfc.tag_spec.flags &= ~V1_ONLY_FLAG;
 		gfc.tag_spec.flags |= PAD_V2_FLAG;
 		gfc.tag_spec.flags |= ADD_V2_FLAG;
@@ -350,8 +314,8 @@ public class ID3Tag {
 		}
 	}
 
-	public static final int id3tag_set_genre(final LAME_GlobalFlags gfp, final String text) {
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+	public static final int id3tag_set_genre(final GlobalFlags gfp, final String text) {
+		final InternalFlags gfc = gfp.internal_flags;
 		int   ret;
 		if( text == null ) {
 			return -3;
@@ -390,11 +354,11 @@ public class ID3Tag {
 	--tg <value>, --tv TCON=value
 	(although some are not exactly same)*/
 
-	public static final int id3tag_set_albumart(final LAME_GlobalFlags gfp, final byte[] image, final int size) {
-		if (is_lame_internal_flags_null(gfp)) {
+	public static final int id3tag_set_albumart(final GlobalFlags gfp, final byte[] image, final int size) {
+		if (is_internal_flags_null(gfp)) {
 			return 0;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		int     mimetype = MIMETYPE_NONE;
 
 		if( image != null ) {
@@ -537,8 +501,8 @@ public class ID3Tag {
 		return true;
 	}
 
-	private static final int id3v2_add(final LAME_GlobalFlags gfp, final int frame_id, final String lng, final String desc, final String text, final boolean isUnicode) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	private static final int id3v2_add(final GlobalFlags gfp, final int frame_id, final String lng, final String desc, final String text, final boolean isUnicode) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null ) {
 			byte[] bdesc = null;
 			if( desc != null ) {
@@ -571,22 +535,22 @@ public class ID3Tag {
 		return -255;
 	}
 
-	private static final String id3v2_get_language(final LAME_GlobalFlags gfp)
+	private static final String id3v2_get_language(final GlobalFlags gfp)
 	{
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null ) {
 			return gfc.tag_spec.language;
 		}
 		return null;
 	}
 
-	private static final int id3v2_add_lng(final LAME_GlobalFlags gfp, final int frame_id, final String desc, final String text, final boolean isEncode)
+	private static final int id3v2_add_lng(final GlobalFlags gfp, final int frame_id, final String desc, final String text, final boolean isEncode)
 	{
 	    final String lang = id3v2_get_language( gfp );
 	    return id3v2_add( gfp, frame_id, lang, desc, text, isEncode );
 	}
 
-	private static final int id3tag_set_userinfo(final LAME_GlobalFlags gfp, final int id, final String fieldvalue, final boolean isEncode) {
+	private static final int id3tag_set_userinfo(final GlobalFlags gfp, final int id, final String fieldvalue, final boolean isEncode) {
 		int rc = -7;
 		final int a = fieldvalue.indexOf('=');
 		if( a >= 0 ) {
@@ -595,12 +559,12 @@ public class ID3Tag {
 		return rc;
 	}
 
-	public static final int id3tag_set_textinfo(final LAME_GlobalFlags gfp, final String id, final String text, final boolean isEncode) {
+	public static final int id3tag_set_textinfo(final GlobalFlags gfp, final String id, final String text, final boolean isEncode) {
 		final int frame_id = toID3v2TagId( id );
 		if( frame_id == 0 ) {
 			return -1;
 		}
-		if( is_lame_internal_flags_null( gfp ) ) {
+		if( is_internal_flags_null( gfp ) ) {
 			return 0;
 		}
 		if( text == null ) {
@@ -631,15 +595,15 @@ public class ID3Tag {
 		return -255;        /* not supported by now */
 	}
 
-	public static final int id3tag_set_comment(final LAME_GlobalFlags gfp, final String lang, final String desc, final String text, final boolean isEncode) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final int id3tag_set_comment(final GlobalFlags gfp, final String lang, final String desc, final String text, final boolean isEncode) {
+		if( is_internal_flags_null( gfp ) ) {
 			return 0;
 		}
 		return id3v2_add( gfp, ID_COMMENT, lang, desc, text, isEncode );
 	}
 
-	public static final void id3tag_set_title(final LAME_GlobalFlags gfp, final String title) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	public static final void id3tag_set_title(final GlobalFlags gfp, final String title) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null && title != null && title.length() != 0 ) {
 			gfc.tag_spec.title = title.getBytes();// java: using default charset
 			gfc.tag_spec.flags |= CHANGED_FLAG;
@@ -647,8 +611,8 @@ public class ID3Tag {
 		}
 	}
 
-	public static final void id3tag_set_artist(final LAME_GlobalFlags gfp, final String artist) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	public static final void id3tag_set_artist(final GlobalFlags gfp, final String artist) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null && artist != null && artist.length() != 0 ) {
 			gfc.tag_spec.artist = artist.getBytes();// java: using default charset
 			gfc.tag_spec.flags |= CHANGED_FLAG;
@@ -656,8 +620,8 @@ public class ID3Tag {
 		}
 	}
 
-	public static final void id3tag_set_album(final LAME_GlobalFlags gfp, final String album) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	public static final void id3tag_set_album(final GlobalFlags gfp, final String album) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null && album != null && album.length() != 0 ) {
 			gfc.tag_spec.album = album.getBytes();// java: using default charset
 			gfc.tag_spec.flags |= CHANGED_FLAG;
@@ -665,8 +629,8 @@ public class ID3Tag {
 		}
 	}
 
-	public static final void id3tag_set_year(final LAME_GlobalFlags gfp, final String year) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	public static final void id3tag_set_year(final GlobalFlags gfp, final String year) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null && year != null && year.length() > 0 ) {
 			int num = Integer.parseInt( year );
 			if( num < 0 ) {
@@ -684,8 +648,8 @@ public class ID3Tag {
 		}
 	}
 
-	public static final void id3tag_set_comment(final LAME_GlobalFlags gfp, final String comment) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	public static final void id3tag_set_comment(final GlobalFlags gfp, final String comment) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		if( gfc != null && comment != null && comment.length() != 0 ) {
 			gfc.tag_spec.comment = comment.getBytes();// java: using default charset
 			gfc.tag_spec.flags |= CHANGED_FLAG;
@@ -697,8 +661,8 @@ public class ID3Tag {
 		}
 	}
 
-	public static final int id3tag_set_track(final LAME_GlobalFlags gfp, final String track) {
-		final LAME_InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
+	public static final int id3tag_set_track(final GlobalFlags gfp, final String track) {
+		final InternalFlags gfc = gfp != null ? gfp.internal_flags : null;
 		int ret = 0;
 
 		if( gfc != null && track != null && track.length() != 0 ) {
@@ -942,8 +906,8 @@ public class ID3Tag {
 		return frame;
 	}
 
-	public static final int id3tag_set_fieldvalue(final LAME_GlobalFlags gfp, final String fieldvalue, final boolean isEncode) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final int id3tag_set_fieldvalue(final GlobalFlags gfp, final String fieldvalue, final boolean isEncode) {
+		if( is_internal_flags_null( gfp ) ) {
 			return 0;
 		}
 		if( fieldvalue != null && fieldvalue.length() != 0 ) {
@@ -968,11 +932,11 @@ public class ID3Tag {
 	private static final byte[] mime_png = "image/png".getBytes();
 	private static final byte[] mime_gif = "image/gif".getBytes();
 
-	public static final int lame_get_id3v2_tag(final LAME_GlobalFlags gfp, final byte[] buffer, final int size) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	public static final int lame_get_id3v2_tag(final GlobalFlags gfp, final byte[] buffer, final int size) {
+		if( is_internal_flags_null( gfp ) ) {
 			return 0;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		if( test_tag_spec_flags( gfc, V1_ONLY_FLAG ) ) {
 			return 0;
 		}
@@ -1096,11 +1060,11 @@ public class ID3Tag {
 		return 0;
 	}
 
-	static final int id3tag_write_v2(final LAME_GlobalFlags gfp) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	static final int id3tag_write_v2(final GlobalFlags gfp) {
+		if( is_internal_flags_null( gfp ) ) {
 			return 0;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		if( test_tag_spec_flags( gfc, V1_ONLY_FLAG ) ) {
 			return 0;
 		}
@@ -1138,7 +1102,7 @@ public class ID3Tag {
 		return foffset;
 	}
 
-	public static final int lame_get_id3v1_tag(final LAME_GlobalFlags gfp, final byte[] buffer, final int size) {
+	public static final int lame_get_id3v1_tag(final GlobalFlags gfp, final byte[] buffer, final int size) {
 		if( gfp == null ) {
 			return 0;
 		}
@@ -1146,7 +1110,7 @@ public class ID3Tag {
 		if( size < tag_size ) {
 			return tag_size;// FIXME why return tag_size?
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		if( gfc == null ) {
 			return 0;
 		}
@@ -1182,11 +1146,11 @@ public class ID3Tag {
 		return 0;
 	}
 
-	static final int id3tag_write_v1(final LAME_GlobalFlags gfp) {
-		if( is_lame_internal_flags_null( gfp ) ) {
+	static final int id3tag_write_v1(final GlobalFlags gfp) {
+		if( is_internal_flags_null( gfp ) ) {
 			return 0;
 		}
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+		final InternalFlags gfc = gfp.internal_flags;
 		final byte tag[] = new byte[128];
 
 		final int n = lame_get_id3v1_tag( gfp, tag, 128 /*tag.length*/);

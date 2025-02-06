@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 
@@ -385,7 +349,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		}
 	}
 
-	private static final void convert_partition2scalefac_s(final LAME_InternalFlags gfc, final float[] eb, final float[] thr, final int chn,
+	private static final void convert_partition2scalefac_s(final InternalFlags gfc, final float[] eb, final float[] thr, final int chn,
 														   final int sblock)
 	{
 		final PsyStateVar psv = gfc.sv_psy;
@@ -402,7 +366,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 	}
 
 	/** longblock threshold calculation (part 2) */
-	private static final void convert_partition2scalefac_l(final LAME_InternalFlags gfc, final float[] eb, final float[] thr, final int chn)
+	private static final void convert_partition2scalefac_l(final InternalFlags gfc, final float[] eb, final float[] thr, final int chn)
 	{
 		final PsyStateVar psv = gfc.sv_psy;
 		final PsyConst_CB2SB gdl = gfc.cd_psy.l;
@@ -411,7 +375,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		convert_partition2scalefac( gdl, eb, thr, enn, thm );
 	}
 
-	private static final void convert_partition2scalefac_l_to_s(final LAME_InternalFlags gfc, final float[] eb, final float[] thr, final int chn)
+	private static final void convert_partition2scalefac_l_to_s(final InternalFlags gfc, final float[] eb, final float[] thr, final int chn)
 	{
 		final PsyStateVar psv = gfc.sv_psy;
 		final PsyConst_CB2SB gds = gfc.cd_psy.l_to_s;
@@ -556,7 +520,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		}
 	}
 
-	private static final void calc_mask_index_l(final LAME_InternalFlags gfc, final float[] max, final float[] avg, final byte[] mask_idx)
+	private static final void calc_mask_index_l(final InternalFlags gfc, final float[] max, final float[] avg, final byte[] mask_idx)
 	{
 		final PsyConst_CB2SB gdl = gfc.cd_psy.l;
 		final int last_tab_entry = tab.length - 1;
@@ -619,7 +583,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		//}
 	}
 
-	private static final void vbrpsy_compute_fft_l(final LAME_InternalFlags gfc,
+	private static final void vbrpsy_compute_fft_l(final InternalFlags gfc,
 		final float buffer[/*2*/][], final int boffset,// java
 		final int chn,
 		final int gr_out, final float fftenergy[/*HBLKSIZE*/],
@@ -665,7 +629,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		}
 	}
 
-	private static final void vbrpsy_compute_fft_s(final LAME_InternalFlags gfc,
+	private static final void vbrpsy_compute_fft_s(final InternalFlags gfc,
 		final float buffer[/*2*/][], final int boffset,// java
 		final int chn,
 		final int sblock, final float fftenergy_s[/*HBLKSIZE_s*/][],
@@ -704,7 +668,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 	/*********************************************************************
 	* compute loudness approximation (used for ATH auto-level adjustment)
 	*********************************************************************/
-	private static final void vbrpsy_compute_loudness_approximation_l(final LAME_InternalFlags gfc, final int gr_out, final int chn,
+	private static final void vbrpsy_compute_loudness_approximation_l(final InternalFlags gfc, final int gr_out, final int chn,
 																	  final float fftenergy[/*HBLKSIZE*/])
 	{
 		final PsyStateVar psv = gfc.sv_psy;
@@ -724,7 +688,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 	*  Apply HPF of fs/4 to the input signal.
 	*  This is used for attack detection / handling.
 	**********************************************************************/
-	private static final void vbrpsy_attack_detection(final LAME_InternalFlags gfc,
+	private static final void vbrpsy_attack_detection(final InternalFlags gfc,
 													  final float buffer[/*2*/][], int boffset,
 													  final int gr_out,
 													  final III_PsyRatio masking_ratio[/*2*/][/*2*/], final III_PsyRatio masking_MS_ratio[/*2*/][/*2*/],
@@ -896,7 +860,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		}
 	}
 
-	private static final void vbrpsy_skip_masking_s(final LAME_InternalFlags gfc, final int chn, final int sblock) {
+	private static final void vbrpsy_skip_masking_s(final InternalFlags gfc, final int chn, final int sblock) {
 		if( sblock == 0 ) {
 			final float[] nbs2 = gfc.sv_psy.nb_s2[chn];//[0];
 			final float[] nbs1 = gfc.sv_psy.nb_s1[chn];//[0];
@@ -907,7 +871,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		}
 	}
 
-	private static final void vbrpsy_calc_mask_index_s(final LAME_InternalFlags gfc, final float[] max,
+	private static final void vbrpsy_calc_mask_index_s(final InternalFlags gfc, final float[] max,
 													   final float[] avg, final byte[] mask_idx)
 	{
 		final PsyConst_CB2SB gds = gfc.cd_psy.s;
@@ -971,7 +935,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		//}
 	}
 
-	private static final void vbrpsy_compute_masking_s(final LAME_InternalFlags gfc, final float fftenergy_s[/*HBLKSIZE_s*/][],
+	private static final void vbrpsy_compute_masking_s(final InternalFlags gfc, final float fftenergy_s[/*HBLKSIZE_s*/][],
 													   final float[] eb, final float[] thr, final int chn, final int sblock)
 	{
 		final PsyStateVar psv = gfc.sv_psy;
@@ -1068,7 +1032,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 		}
 	}
 
-	private static final void vbrpsy_compute_masking_l(final LAME_InternalFlags gfc, final float fftenergy[/*HBLKSIZE*/],
+	private static final void vbrpsy_compute_masking_l(final InternalFlags gfc, final float fftenergy[/*HBLKSIZE*/],
 													   final float eb_l[/*CBANDS*/], final float thr[/*CBANDS*/], final int chn)
 	{
 		final PsyStateVar psv = gfc.sv_psy;
@@ -1201,7 +1165,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 
 	private static final void vbrpsy_compute_block_type(final SessionConfig cfg, final boolean[] uselongblock) {
 		final int short_blocks = cfg.short_blocks;// java
-		if( short_blocks == LAME_GlobalFlags.short_block_coupled
+		if( short_blocks == GlobalFlags.short_block_coupled
 				/* force both channels to use the same block type */
 				/* this is necessary if the frame is to be encoded in ms_stereo.  */
 				/* But even without ms_stereo, FhG  does this */
@@ -1209,8 +1173,8 @@ future:  Data indicates that the shape of the equal loudness curve varies
 			uselongblock[0] = uselongblock[1] = false;
 		}
 
-		final boolean is_short_block_dispensed = (short_blocks == LAME_GlobalFlags.short_block_dispensed);
-		final boolean is_short_block_forced = (short_blocks == LAME_GlobalFlags.short_block_forced);
+		final boolean is_short_block_dispensed = (short_blocks == GlobalFlags.short_block_dispensed);
+		final boolean is_short_block_forced = (short_blocks == GlobalFlags.short_block_forced);
 		for( int chn = 0, channels_out = cfg.channels_out; chn < channels_out; chn++ ) {
 			/* disable short blocks */
 			if( is_short_block_dispensed ) {
@@ -1319,7 +1283,7 @@ future:  Data indicates that the shape of the equal loudness curve varies
 	 * compared to the chance of getting annyoing artefacts. L3psycho_anal_vbr does
 	 * not use this feature. (Robert 071216)
 	 */
-	static final int L3psycho_anal_vbr(final LAME_InternalFlags gfc,
+	static final int L3psycho_anal_vbr(final InternalFlags gfc,
 									   final float buffer[/*2*/][], final int boffset,
 									   final int gr_out,
 									   final III_PsyRatio masking_ratio[][],// [2][2],
@@ -1776,8 +1740,8 @@ future:  Data indicates that the shape of the equal loudness curve varies
 	private static final float sk[] =
 		{ -7.4f, -7.4f, -7.4f, -9.5f, -7.4f, -6.1f, -5.5f, -4.7f, -4.7f, -4.7f, -4.7f };
 
-	static final int psymodel_init(final LAME_GlobalFlags gfp) {
-		final LAME_InternalFlags gfc = gfp.internal_flags;
+	static final int psymodel_init(final GlobalFlags gfp) {
+		final InternalFlags gfc = gfp.internal_flags;
 		final SessionConfig cfg = gfc.cfg;
 		final PsyStateVar psv = gfc.sv_psy;
 		final float bvl_a = 13, bvl_b = 24;

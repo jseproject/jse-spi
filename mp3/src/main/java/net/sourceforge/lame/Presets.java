@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 // presets.c
@@ -166,8 +130,8 @@ new VBRPresets(10,      9,       9,  true,  25.00f, 300.0f,       2.8f,    2.8f,
 		}
 	}
 
-	private static final void apply_vbr_preset(final LAME_GlobalFlags gfp, final int a, final boolean enforce) {
-		final VBRPresets vbr_preset[] = get_vbr_preset( gfp.lame_get_VBR() );
+	private static final void apply_vbr_preset(final GlobalFlags gfp, final int a, final boolean enforce) {
+		final VBRPresets vbr_preset[] = get_vbr_preset( gfp.get_VBR() );
 		float x = gfp.VBR_q_frac;
 		final VBRPresets p = vbr_preset[a];
 		final VBRPresets q = vbr_preset[a + 1];
@@ -194,86 +158,86 @@ new VBRPresets(10,      9,       9,  true,  25.00f, 300.0f,       2.8f,    2.8f,
 		LERP( ath_fixpoint );
 		*/
 
-		gfp.lame_set_VBR_q( set.vbr_q );
+		gfp.set_VBR_q( set.vbr_q );
 		if( enforce ) {
-			gfp.lame_set_quant_comp( set.quant_comp );
-		} else if( !(Math.abs( gfp.lame_get_quant_comp() - (-1) ) > 0) ) {
-			gfp.lame_set_quant_comp( set.quant_comp );
+			gfp.set_quant_comp( set.quant_comp );
+		} else if( !(Math.abs( gfp.get_quant_comp() - (-1) ) > 0) ) {
+			gfp.set_quant_comp( set.quant_comp );
 		}
 
 		if( enforce ) {
-			gfp.lame_set_quant_comp_short( set.quant_comp_s );
-		} else if( !(Math.abs( gfp.lame_get_quant_comp_short() - (-1) ) > 0) ) {
-			gfp.lame_set_quant_comp_short( set.quant_comp_s );
+			gfp.set_quant_comp_short( set.quant_comp_s );
+		} else if( !(Math.abs( gfp.get_quant_comp_short() - (-1) ) > 0) ) {
+			gfp.set_quant_comp_short( set.quant_comp_s );
 		}
 
 		if( set.expY ) {
-			gfp.lame_set_experimentalY( set.expY );
+			gfp.set_experimentalY( set.expY );
 		}
 
 		if( enforce ) {
-			gfp.lame_set_short_threshold_lrm( set.st_lrm );
-		} else if( !(Math.abs( gfp.lame_get_short_threshold_lrm() - (-1) ) > 0) ) {
-			gfp.lame_set_short_threshold_lrm( set.st_lrm );
+			gfp.set_short_threshold_lrm( set.st_lrm );
+		} else if( !(Math.abs( gfp.get_short_threshold_lrm() - (-1) ) > 0) ) {
+			gfp.set_short_threshold_lrm( set.st_lrm );
 		}
 		if( enforce ) {
-			gfp.lame_set_short_threshold_s( set.st_s );
-		} else if( !(Math.abs( gfp.lame_get_short_threshold_s() - (-1) ) > 0) ) {
-			gfp.lame_set_short_threshold_s( set.st_s );
+			gfp.set_short_threshold_s( set.st_s );
+		} else if( !(Math.abs( gfp.get_short_threshold_s() - (-1) ) > 0) ) {
+			gfp.set_short_threshold_s( set.st_s );
 		}
 		if( enforce ) {
-			gfp.lame_set_maskingadjust( set.masking_adj );
-		} else if( !(Math.abs( gfp.lame_get_maskingadjust() - (0) ) > 0) ) {
-			gfp.lame_set_maskingadjust( set.masking_adj );
+			gfp.set_maskingadjust( set.masking_adj );
+		} else if( !(Math.abs( gfp.get_maskingadjust() - (0) ) > 0) ) {
+			gfp.set_maskingadjust( set.masking_adj );
 		}
 		if( enforce ) {
-			gfp.lame_set_maskingadjust_short( set.masking_adj_short );
-		} else if( !(Math.abs( gfp.lame_get_maskingadjust_short() - (0) ) > 0) ) {
-			gfp.lame_set_maskingadjust_short( set.masking_adj_short );
+			gfp.set_maskingadjust_short( set.masking_adj_short );
+		} else if( !(Math.abs( gfp.get_maskingadjust_short() - (0) ) > 0) ) {
+			gfp.set_maskingadjust_short( set.masking_adj_short );
 		}
-		if( gfp.lame_get_VBR() == LAME.vbr_mt || gfp.lame_get_VBR() == LAME.vbr_mtrh ) {
-			gfp.lame_set_ATHtype( 5 );
-		}
-		if( enforce ) {
-			gfp.lame_set_ATHlower( set.ath_lower );
-		} else if( !(Math.abs( gfp.lame_get_ATHlower() - (0) ) > 0) ) {
-			gfp.lame_set_ATHlower( set.ath_lower );
+		if( gfp.get_VBR() == LAME.vbr_mt || gfp.get_VBR() == LAME.vbr_mtrh ) {
+			gfp.set_ATHtype( 5 );
 		}
 		if( enforce ) {
-			gfp.lame_set_ATHcurve( set.ath_curve );
-		} else if( !(Math.abs( gfp.lame_get_ATHcurve() - (-1) ) > 0) ) {
-			gfp.lame_set_ATHcurve( set.ath_curve );
+			gfp.set_ATHlower( set.ath_lower );
+		} else if( !(Math.abs( gfp.get_ATHlower() - (0) ) > 0) ) {
+			gfp.set_ATHlower( set.ath_lower );
 		}
 		if( enforce ) {
-			gfp.lame_set_athaa_sensitivity( set.ath_sensitivity );
-		} else if( !(Math.abs( gfp.lame_get_athaa_sensitivity() - (0) ) > 0) ) {
-			gfp.lame_set_athaa_sensitivity( set.ath_sensitivity );
+			gfp.set_ATHcurve( set.ath_curve );
+		} else if( !(Math.abs( gfp.get_ATHcurve() - (-1) ) > 0) ) {
+			gfp.set_ATHcurve( set.ath_curve );
+		}
+		if( enforce ) {
+			gfp.set_athaa_sensitivity( set.ath_sensitivity );
+		} else if( !(Math.abs( gfp.get_athaa_sensitivity() - (0) ) > 0) ) {
+			gfp.set_athaa_sensitivity( set.ath_sensitivity );
 		}
 		if( set.interch > 0 ) {
 			if( enforce ) {
-				gfp.lame_set_interChRatio( set.interch );
-			} else if( !(Math.abs( gfp.lame_get_interChRatio() - (-1) ) > 0) ) {
-				gfp.lame_set_interChRatio( set.interch );
+				gfp.set_interChRatio( set.interch );
+			} else if( !(Math.abs( gfp.get_interChRatio() - (-1) ) > 0) ) {
+				gfp.set_interChRatio( set.interch );
 			}
 		}
 
 		/* parameters for which there is no proper set/get interface */
 		if( set.safejoint > 0 ) {
-			gfp.lame_set_exp_nspsytune( gfp.lame_get_exp_nspsytune() | 2 );
+			gfp.set_exp_nspsytune( gfp.get_exp_nspsytune() | 2 );
 		}
 		if( set.sfb21mod > 0 ) {
-			final int nsp = gfp.lame_get_exp_nspsytune();
+			final int nsp = gfp.get_exp_nspsytune();
 			final int val = (nsp >> 20) & 63;
 			if( val == 0 ) {
 				final int sf21mod = (set.sfb21mod << 20) | nsp;
-				gfp.lame_set_exp_nspsytune( sf21mod );
+				gfp.set_exp_nspsytune( sf21mod );
 			}
 		}
 
 		if( enforce ) {
-			gfp.lame_set_msfix( set.msfix );
-		} else if( !(Math.abs( gfp.lame_get_msfix() - (-1) ) > 0) ) {
-			gfp.lame_set_msfix( set.msfix );
+			gfp.set_msfix( set.msfix );
+		} else if( !(Math.abs( gfp.get_msfix() - (-1) ) > 0) ) {
+			gfp.set_msfix( set.msfix );
 		}
 
 		if( ! enforce ) {
@@ -346,95 +310,95 @@ new ABRPresets(256,     9,  9,        1,   0.97f,  5.20f,  125,  1.00f,   -8,   
 new ABRPresets(320,     9,  9,        1,   0.90f,  5.20f,  125,  1.00f,  -10,   12.0f,      0f,    0f,             0)  /* 320 */
 	};
 
-	private static final int apply_abr_preset(final LAME_GlobalFlags gfp, final int preset, final boolean enforce) {
+	private static final int apply_abr_preset(final GlobalFlags gfp, final int preset, final boolean enforce) {
 
 		/* Variables for the ABR stuff */
 		final int actual_bitrate = preset;
 		final int r = Util.nearestBitrateFullIndex( preset );
 
-		gfp.lame_set_VBR( LAME.vbr_abr );
-		gfp.lame_set_VBR_mean_bitrate_kbps( (actual_bitrate) );
-		gfp.lame_set_VBR_mean_bitrate_kbps( Math.min( gfp.lame_get_VBR_mean_bitrate_kbps(), 320 ) );
-		gfp.lame_set_VBR_mean_bitrate_kbps( Math.max( gfp.lame_get_VBR_mean_bitrate_kbps(), 8 ) );
-		gfp.lame_set_brate( gfp.lame_get_VBR_mean_bitrate_kbps() );
+		gfp.set_VBR( LAME.vbr_abr );
+		gfp.set_VBR_mean_bitrate_kbps( (actual_bitrate) );
+		gfp.set_VBR_mean_bitrate_kbps( Math.min( gfp.get_VBR_mean_bitrate_kbps(), 320 ) );
+		gfp.set_VBR_mean_bitrate_kbps( Math.max( gfp.get_VBR_mean_bitrate_kbps(), 8 ) );
+		gfp.set_brate( gfp.get_VBR_mean_bitrate_kbps() );
 
 
 		/* parameters for which there is no proper set/get interface */
 		if( abr_switch_map[r].safejoint > 0 ) {
-			gfp.lame_set_exp_nspsytune( gfp.lame_get_exp_nspsytune() | 2 );
+			gfp.set_exp_nspsytune( gfp.get_exp_nspsytune() | 2 );
 		} /* safejoint */
 
 		if( abr_switch_map[r].sfscale > 0 ) {
-			gfp.lame_set_sfscale( true );
+			gfp.set_sfscale( true );
 		}
 
 		if( enforce ) {
-			gfp.lame_set_quant_comp( abr_switch_map[r].quant_comp );
-		} else if( !(Math.abs( gfp.lame_get_quant_comp() - (-1) ) > 0) ) {
-			gfp.lame_set_quant_comp( abr_switch_map[r].quant_comp );
+			gfp.set_quant_comp( abr_switch_map[r].quant_comp );
+		} else if( !(Math.abs( gfp.get_quant_comp() - (-1) ) > 0) ) {
+			gfp.set_quant_comp( abr_switch_map[r].quant_comp );
 		}
 		if( enforce ) {
-			gfp.lame_set_quant_comp_short( abr_switch_map[r].quant_comp_s );
-		} else if( !(Math.abs( gfp.lame_get_quant_comp_short() - (-1) ) > 0) ) {
-			gfp.lame_set_quant_comp_short( abr_switch_map[r].quant_comp_s );
-		}
-
-		if( enforce ) {
-			gfp.lame_set_msfix( abr_switch_map[r].nsmsfix );
-		} else if( !(Math.abs( gfp.lame_get_msfix() - (-1) ) > 0) ) {
-			gfp.lame_set_msfix( abr_switch_map[r].nsmsfix );
+			gfp.set_quant_comp_short( abr_switch_map[r].quant_comp_s );
+		} else if( !(Math.abs( gfp.get_quant_comp_short() - (-1) ) > 0) ) {
+			gfp.set_quant_comp_short( abr_switch_map[r].quant_comp_s );
 		}
 
 		if( enforce ) {
-			gfp.lame_set_short_threshold_lrm( abr_switch_map[r].st_lrm );
-		} else if( !(Math.abs( gfp.lame_get_short_threshold_lrm() - (-1) ) > 0) ) {
-			gfp.lame_set_short_threshold_lrm( abr_switch_map[r].st_lrm );
+			gfp.set_msfix( abr_switch_map[r].nsmsfix );
+		} else if( !(Math.abs( gfp.get_msfix() - (-1) ) > 0) ) {
+			gfp.set_msfix( abr_switch_map[r].nsmsfix );
 		}
 
 		if( enforce ) {
-			gfp.lame_set_short_threshold_s( abr_switch_map[r].st_s );
-		} else if( !(Math.abs( gfp.lame_get_short_threshold_s() - (-1) ) > 0) ) {
-			gfp.lame_set_short_threshold_s( abr_switch_map[r].st_s );
+			gfp.set_short_threshold_lrm( abr_switch_map[r].st_lrm );
+		} else if( !(Math.abs( gfp.get_short_threshold_lrm() - (-1) ) > 0) ) {
+			gfp.set_short_threshold_lrm( abr_switch_map[r].st_lrm );
+		}
+
+		if( enforce ) {
+			gfp.set_short_threshold_s( abr_switch_map[r].st_s );
+		} else if( !(Math.abs( gfp.get_short_threshold_s() - (-1) ) > 0) ) {
+			gfp.set_short_threshold_s( abr_switch_map[r].st_s );
 		}
 
 		/* ABR seems to have big problems with clipping, especially at low bitrates */
 		/* so we compensate for that here by using a scale value depending on bitrate */
-		gfp.lame_set_scale( gfp.lame_get_scale() * abr_switch_map[r].scale );
+		gfp.set_scale( gfp.get_scale() * abr_switch_map[r].scale );
 
 		if( enforce ) {
-			gfp.lame_set_maskingadjust( abr_switch_map[r].masking_adj );
-		} else if( !(Math.abs( gfp.lame_get_maskingadjust() - (0) ) > 0) ) {
-			gfp.lame_set_maskingadjust( abr_switch_map[r].masking_adj );
+			gfp.set_maskingadjust( abr_switch_map[r].masking_adj );
+		} else if( !(Math.abs( gfp.get_maskingadjust() - (0) ) > 0) ) {
+			gfp.set_maskingadjust( abr_switch_map[r].masking_adj );
 		}
 		if( abr_switch_map[r].masking_adj > 0 ) {
 			if( enforce ) {
-				gfp.lame_set_maskingadjust_short( abr_switch_map[r].masking_adj * .9f );
-			} else if( !(Math.abs( gfp.lame_get_maskingadjust_short() - (0) ) > 0) ) {
-				gfp.lame_set_maskingadjust_short( abr_switch_map[r].masking_adj * .9f );
+				gfp.set_maskingadjust_short( abr_switch_map[r].masking_adj * .9f );
+			} else if( !(Math.abs( gfp.get_maskingadjust_short() - (0) ) > 0) ) {
+				gfp.set_maskingadjust_short( abr_switch_map[r].masking_adj * .9f );
 			}
 		} else {
 			if( enforce ) {
-				gfp.lame_set_maskingadjust_short( abr_switch_map[r].masking_adj * 1.1f );
-			} else if( !(Math.abs( gfp.lame_get_maskingadjust_short() - (0) ) > 0) ) {
-				gfp.lame_set_maskingadjust_short( abr_switch_map[r].masking_adj * 1.1f );
+				gfp.set_maskingadjust_short( abr_switch_map[r].masking_adj * 1.1f );
+			} else if( !(Math.abs( gfp.get_maskingadjust_short() - (0) ) > 0) ) {
+				gfp.set_maskingadjust_short( abr_switch_map[r].masking_adj * 1.1f );
 			}
 		}
 
 		if( enforce ) {
-			gfp.lame_set_ATHlower( abr_switch_map[r].ath_lower );
-		} else if( !(Math.abs( gfp.lame_get_ATHlower() - (0) ) > 0) ) {
-			gfp.lame_set_ATHlower( abr_switch_map[r].ath_lower );
+			gfp.set_ATHlower( abr_switch_map[r].ath_lower );
+		} else if( !(Math.abs( gfp.get_ATHlower() - (0) ) > 0) ) {
+			gfp.set_ATHlower( abr_switch_map[r].ath_lower );
 		}
 		if( enforce ) {
-			gfp.lame_set_ATHcurve( abr_switch_map[r].ath_curve );
-		} else if( !(Math.abs( gfp.lame_get_ATHcurve() - (-1) ) > 0) ) {
-			gfp.lame_set_ATHcurve( abr_switch_map[r].ath_curve );
+			gfp.set_ATHcurve( abr_switch_map[r].ath_curve );
+		} else if( !(Math.abs( gfp.get_ATHcurve() - (-1) ) > 0) ) {
+			gfp.set_ATHcurve( abr_switch_map[r].ath_curve );
 		}
 
 		if( enforce ) {
-			gfp.lame_set_interChRatio( abr_switch_map[r].interch );
-		} else if( !(Math.abs( gfp.lame_get_interChRatio() - (-1) ) > 0) ) {
-			gfp.lame_set_interChRatio( abr_switch_map[r].interch );
+			gfp.set_interChRatio( abr_switch_map[r].interch );
+		} else if( !(Math.abs( gfp.get_interChRatio() - (-1) ) > 0) ) {
+			gfp.set_interChRatio( abr_switch_map[r].interch );
 		}
 
 		// abr_switch_map[r].abr_kbps;
@@ -444,37 +408,37 @@ new ABRPresets(320,     9,  9,        1,   0.90f,  5.20f,  125,  1.00f,  -10,   
 		return preset;
 	}
 
-	static final int apply_preset(final LAME_GlobalFlags gfp, int preset, final boolean enforce ) {
+	static final int apply_preset(final GlobalFlags gfp, int preset, final boolean enforce ) {
 		/*translate legacy presets */
 		switch( preset ) {
 		case LAME.R3MIX: {
 			preset = LAME.V3;
-			gfp.lame_set_VBR( LAME.vbr_mtrh );
+			gfp.set_VBR( LAME.vbr_mtrh );
 			break;
 		}
 		case LAME.MEDIUM:
 		case LAME.MEDIUM_FAST: {
 			preset = LAME.V4;
-			gfp.lame_set_VBR( LAME.vbr_mtrh );
+			gfp.set_VBR( LAME.vbr_mtrh );
 			break;
 		}
 		case LAME.STANDARD:
 		case LAME.STANDARD_FAST: {
 			preset = LAME.V2;
-			gfp.lame_set_VBR( LAME.vbr_mtrh );
+			gfp.set_VBR( LAME.vbr_mtrh );
 			break;
 		}
 		case LAME.EXTREME:
 		case LAME.EXTREME_FAST: {
 			preset = LAME.V0;
-			gfp.lame_set_VBR( LAME.vbr_mtrh );
+			gfp.set_VBR( LAME.vbr_mtrh );
 			break;
 		}
 		case LAME.INSANE: {
 			preset = 320;
 			gfp.preset = preset;
 			apply_abr_preset( gfp, preset, enforce );
-			gfp.lame_set_VBR( LAME.vbr_off );
+			gfp.set_VBR( LAME.vbr_off );
 			return preset;
 		}
 		}

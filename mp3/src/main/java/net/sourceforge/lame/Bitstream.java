@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Naoko Mitsurugi
- * Copyright (c) 1999-2010 The LAME Project
- * Copyright (c) 1999-2008 JavaZOOM
- * Copyright (c) 2001-2002 Naoki Shibata
- * Copyright (c) 2001 Jonathan Dee
- * Copyright (c) 2000-2017 Robert Hegemann
- * Copyright (c) 2000-2008 Gabriel Bouvigne
- * Copyright (c) 2000-2005 Alexander Leidinger
- * Copyright (c) 2000 Don Melton
- * Copyright (c) 1999-2005 Takehiro Tominaga
- * Copyright (c) 1999-2001 Mark Taylor
- * Copyright (c) 1999 Albert L. Faber
- * Copyright (c) 1988, 1993 Ron Mayer
- * Copyright (c) 1998 Michael Cheng
- * Copyright (c) 1997 Jeff Tsay
- * Copyright (c) 1995-1997 Michael Hipp
- * Copyright (c) 1993-1994 Tobias Bading,
- *                         Berlin University of Technology
- *
- * - This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * - This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * - You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
- */
-
 package net.sourceforge.lame;
 
 import net.sourceforge.lame.EncStateVar.Header;
@@ -70,7 +34,7 @@ class Bitstream {
 	/***********************************************************************
 	 * compute bitsperframe and mean_bits for a layer III frame
 	 **********************************************************************/
-	static final int getframebits(final LAME_InternalFlags gfc) {
+	static final int getframebits(final InternalFlags gfc) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncResult eov = gfc.ov_enc;
 		int bit_rate;
@@ -123,7 +87,7 @@ class Bitstream {
 		return maxmp3buf;
 	}
 
-	private static final void putheader_bits(final LAME_InternalFlags gfc) {
+	private static final void putheader_bits(final InternalFlags gfc) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncStateVar esv = gfc.sv_enc;
 		final Bitstream bs = gfc.bs;
@@ -134,7 +98,7 @@ class Bitstream {
 	}
 
 	/** write j bits into the bit stream */
-	private static final void putbits2(final LAME_InternalFlags gfc, final int val, int j) {
+	private static final void putbits2(final InternalFlags gfc, final int val, int j) {
 		final EncStateVar esv = gfc.sv_enc;
 		final Bitstream bs = gfc.bs;
 		final byte[] buf = bs.buf;// java
@@ -162,7 +126,7 @@ class Bitstream {
 	}
 
 	/** write j bits into the bit stream, ignoring frame headers */
-	private static final void putbits_noheaders(final LAME_InternalFlags gfc, final int val, int j) {
+	private static final void putbits_noheaders(final InternalFlags gfc, final int val, int j) {
 		final Bitstream bs = gfc.bs;
 		final byte[] buf = bs.buf;// java
 		int buf_bit_idx = bs.buf_bit_idx;// java
@@ -193,7 +157,7 @@ class Bitstream {
 	  indicate main_data_length. In these situations, we put stuffing bits into
 	  the ancillary data...
 	*/
-	private static final void drain_into_ancillary(final LAME_InternalFlags gfc, int remainingBits) {
+	private static final void drain_into_ancillary(final InternalFlags gfc, int remainingBits) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncStateVar esv = gfc.sv_enc;
 
@@ -215,7 +179,7 @@ class Bitstream {
 		}
 
 		if( remainingBits >= 32 ) {
-			final String version = LAME_Version.get_lame_short_version();
+			final String version = Version.get_lame_short_version();
 			if( remainingBits >= 32 ) {
 				for( int i = 0, length = version.length(); i < length && remainingBits >= 8; ++i ) {
 					remainingBits -= 8;
@@ -231,7 +195,7 @@ class Bitstream {
 	}
 
 	/**write N bits into the header */
-	private static void writeheader(final LAME_InternalFlags gfc, final int val, int j) {
+	private static void writeheader(final InternalFlags gfc, final int val, int j) {
 		final EncStateVar esv = gfc.sv_enc;
 		final Header header = esv.header[esv.h_ptr];
 		final byte[] buf = header.buf;// java
@@ -260,7 +224,7 @@ class Bitstream {
 		return crc;
 	}
 
-	static final void CRC_writeheader(final LAME_InternalFlags gfc, final byte[] header) {
+	static final void CRC_writeheader(final InternalFlags gfc, final byte[] header) {
 		final SessionConfig cfg = gfc.cfg;
 		int crc = 0xffff;    /* (jo) init crc16 for error_protection */
 
@@ -274,7 +238,7 @@ class Bitstream {
 		header[5] = (byte)crc;
 	}
 
-	private static final void encodeSideInfo2(final LAME_InternalFlags gfc, final int bitsPerFrame) {
+	private static final void encodeSideInfo2(final InternalFlags gfc, final int bitsPerFrame) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncResult eov = gfc.ov_enc;
 		final EncStateVar esv = gfc.sv_enc;
@@ -447,7 +411,7 @@ class Bitstream {
 		}
 	}
 
-	private static final int huffman_coder_count1(final LAME_InternalFlags gfc, final III_GrInfo gi) {
+	private static final int huffman_coder_count1(final InternalFlags gfc, final III_GrInfo gi) {
 		/* Write count1 area */
 		final HuffCodeTab h = Tables.ht[gi.count1table_select + 32];
 		int bits = 0;
@@ -511,7 +475,7 @@ class Bitstream {
 }
 
 	/** Implements the pseudocode of page 98 of the IS */
-	private static final int Huffmancode(final LAME_InternalFlags gfc, final int tableindex, final int start, final int end, final III_GrInfo gi)
+	private static final int Huffmancode(final InternalFlags gfc, final int tableindex, final int start, final int end, final III_GrInfo gi)
 	{
 		if( 0 == tableindex ) {
 			return 0;
@@ -584,7 +548,7 @@ class Bitstream {
 	  and 29 of the IS, as well as the definitions of the side
 	  information on pages 26 and 27.
 	  */
-	private static final int ShortHuffmancodebits(final LAME_InternalFlags gfc, final III_GrInfo gi) {
+	private static final int ShortHuffmancodebits(final InternalFlags gfc, final III_GrInfo gi) {
 		int region1Start = 3 * gfc.scalefac_band.s[3];
 		if( region1Start > gi.big_values ) {
 			region1Start = gi.big_values;
@@ -596,7 +560,7 @@ class Bitstream {
 		return bits;
 	}
 
-	private static final int LongHuffmancodebits(final LAME_InternalFlags gfc, final III_GrInfo gi) {
+	private static final int LongHuffmancodebits(final InternalFlags gfc, final III_GrInfo gi) {
 		final int bigvalues = gi.big_values;
 
 		int i = gi.region0_count + 1;
@@ -622,7 +586,7 @@ class Bitstream {
 		return bits;
 	}
 
-	private static final int writeMainData(final LAME_InternalFlags gfc) {
+	private static final int writeMainData(final InternalFlags gfc) {
 		final SessionConfig cfg = gfc.cfg;
 		final III_SideInfo l3_side = gfc.l3_side;
 		int tot_bits = 0;
@@ -730,7 +694,7 @@ class Bitstream {
 
 	 * @return (flushbits) | (total_bytes_output << 32)
 	 */
-	static final long compute_flushbits(final LAME_InternalFlags gfc/*, final int[] total_bytes_output*/) {
+	static final long compute_flushbits(final InternalFlags gfc/*, final int[] total_bytes_output*/) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncStateVar esv = gfc.sv_enc;
 		final int first_ptr = esv.w_ptr; /* first header to add to bitstream */
@@ -776,7 +740,7 @@ class Bitstream {
 		return ((long)flushbits & 0xffffffffL) | ((long)total_bytes_output << 32);
 	}
 
-	static final void flush_bitstream(final LAME_InternalFlags gfc) {
+	static final void flush_bitstream(final InternalFlags gfc) {
 		final EncStateVar esv = gfc.sv_enc;
 		int last_ptr = esv.h_ptr - 1; /* last header to add to bitstream */
 		if( last_ptr == -1 ) {
@@ -796,7 +760,7 @@ class Bitstream {
 		gfc.l3_side.main_data_begin = 0;
 	}
 
-	static final void add_dummy_byte(final LAME_InternalFlags gfc, final byte val, int n) {
+	static final void add_dummy_byte(final InternalFlags gfc, final byte val, int n) {
 		final EncStateVar esv = gfc.sv_enc;
 		final int ival = (int)val & 0xff;// java
 		final Header[] header = esv.header;// java
@@ -823,7 +787,7 @@ class Bitstream {
 	  in the IS).
 	  */
 	@SuppressWarnings("boxing")
-	static final int format_bitstream(final LAME_InternalFlags gfc) {
+	static final int format_bitstream(final InternalFlags gfc) {
 		final SessionConfig cfg = gfc.cfg;
 		final EncStateVar esv = gfc.sv_enc;
 		final III_SideInfo l3_side = gfc.l3_side;
@@ -889,7 +853,7 @@ class Bitstream {
 		return 0;
 	}
 
-	static final int do_copy_buffer(final LAME_InternalFlags gfc, final byte[] buffer, final int offset, final int size) {
+	static final int do_copy_buffer(final InternalFlags gfc, final byte[] buffer, final int offset, final int size) {
 		final Bitstream bs = gfc.bs;
 		final int minimum = bs.buf_byte_idx + 1;
 		if( minimum <= 0 ) {
@@ -910,7 +874,7 @@ class Bitstream {
 	   mp3data=0      indicates data in buffer is an id3tags and VBR tags
 	   mp3data=1      data is real mp3 frame data.
 	*/
-	static final int copy_buffer(final LAME_InternalFlags gfc, final byte[] buffer, final int offset, final int size, final boolean mp3data) {
+	static final int copy_buffer(final InternalFlags gfc, final byte[] buffer, final int offset, final int size, final boolean mp3data) {
 		final int minimum = do_copy_buffer( gfc, buffer, offset, size );
 		if( minimum > 0 && mp3data ) {
 			gfc.nMusicCRC = VBRTag.UpdateMusicCRC( gfc.nMusicCRC, buffer, offset, minimum );
@@ -926,7 +890,7 @@ class Bitstream {
 	}
 
 
-	static final void init_bit_stream_w(final LAME_InternalFlags gfc ) {
+	static final void init_bit_stream_w(final InternalFlags gfc ) {
 		final EncStateVar esv = gfc.sv_enc;
 
 		esv.h_ptr = esv.w_ptr = 0;
